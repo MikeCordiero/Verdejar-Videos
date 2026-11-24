@@ -1,0 +1,85 @@
+{
+ "artigo": {
+  "endereco": "natal",
+  "titulo": "Exemplo: plantas vermelhas",
+  "planta": "Cyclamen"
+ },
+ "modelo": "lista",
+ "natal": true,
+ "planta": {
+  "forma": "flor",
+  "bracteas": true,
+  "corFlor": "vermelho",
+  "vaso": "creme"
+ },
+ "beats": [
+  {
+   "texto": "Three red plants that aren't a poinsettia!",
+   "cena": "item",
+   "enfase": [
+    "red"
+   ],
+   "choque": true,
+   "item": {
+    "forma": "flor",
+    "corFlor": "vermelho",
+    "nome": "Cyclamen",
+    "vaso": "creme"
+   }
+  },
+  {
+   "texto": "Cyclamen loves a cool, bright room.",
+   "cena": "item",
+   "enfase": [
+    "cool,"
+   ],
+   "item": {
+    "forma": "flor",
+    "corFlor": "vermelho",
+    "nome": "Cyclamen",
+    "vaso": "creme"
+   }
+  },
+  {
+   "texto": "Amaryllis grows a giant bloom in weeks.",
+   "cena": "item",
+   "enfase": [
+    "giant"
+   ],
+   "item": {
+    "forma": "flor",
+    "corFlor": "laranja",
+    "nome": "Amaryllis",
+    "vaso": "terracota"
+   }
+  },
+  {
+   "texto": "And the Christmas cactus flowers right on time!",
+   "cena": "item",
+   "enfase": [
+    "time!"
+   ],
+   "item": {
+    "forma": "cato",
+    "corFlor": "rosa",
+    "nome": "Christmas cactus",
+    "vaso": "lilas"
+   }
+  },
+  {
+   "texto": "Not sure how to keep them happy? There's an app for that.",
+   "cena": "app",
+   "enfase": [
+    "app"
+   ]
+  },
+  {
+   "texto": "Link in bio!",
+   "cena": "link"
+  }
+ ],
+ "pronuncia": {
+  "Cyclamen": "SIK-luh-men"
+ },
+ "legenda": "Looking for red at Christmas beyond the poinsettia? These three bring colour all season."
+}

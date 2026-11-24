@@ -1,0 +1,69 @@
+{
+ "artigo": {
+  "endereco": "rega",
+  "titulo": "Exemplo: rega",
+  "planta": "Monstera"
+ },
+ "modelo": "erros",
+ "natal": false,
+ "planta": {
+  "forma": "folhagem",
+  "vaso": "azul"
+ },
+ "beats": [
+  {
+   "texto": "Why is your plant dying?",
+   "cena": "triste",
+   "enfase": [
+    "dying?"
+   ],
+   "choque": true
+  },
+  {
+   "texto": "Relax! It's almost always the watering.",
+   "cena": "calma",
+   "enfase": [
+    "watering."
+   ]
+  },
+  {
+   "texto": "A little splash every day... drowns the roots!",
+   "cena": "copo",
+   "enfase": []
+  },
+  {
+   "texto": "See? The water sits at the bottom.",
+   "cena": "afogar",
+   "enfase": [
+    "bottom."
+   ],
+   "choque": true
+  },
+  {
+   "texto": "Stick your finger in the soil. Dry?",
+   "cena": "dedo",
+   "enfase": [
+    "Dry?"
+   ]
+  },
+  {
+   "texto": "Water deeply, until it drains!",
+   "cena": "regar",
+   "enfase": [
+    "drains!"
+   ]
+  },
+  {
+   "texto": "Every plant is different. There's an app that tells you when.",
+   "cena": "app",
+   "enfase": [
+    "when."
+   ]
+  },
+  {
+   "texto": "Link in bio!",
+   "cena": "link"
+  }
+ ],
+ "legenda": "Most plants don't die from neglect. They drown in kindness. Check the soil before you water."
+}

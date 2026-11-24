@@ -1,0 +1,63 @@
+{
+ "artigo": {
+  "endereco": "areca",
+  "titulo": "Exemplo: areca",
+  "planta": "Areca palm"
+ },
+ "modelo": "sintoma",
+ "natal": false,
+ "planta": {
+  "forma": "palmeira",
+  "vaso": "terracota"
+ },
+ "beats": [
+  {
+   "texto": "Brown tips on your palm?",
+   "cena": "ar-seco",
+   "enfase": [
+    "Brown"
+   ],
+   "choque": true
+  },
+  {
+   "texto": "Don't panic! It's telling you something.",
+   "cena": "calma",
+   "enfase": [
+    "telling"
+   ]
+  },
+  {
+   "texto": "Dry air from the heater pulls water from the leaves.",
+   "cena": "ar-seco",
+   "enfase": [
+    "heater"
+   ]
+  },
+  {
+   "texto": "Or the soil dried out completely.",
+   "cena": "secura",
+   "enfase": [
+    "completely."
+   ]
+  },
+  {
+   "texto": "Water when the top inch is dry, and move it away from heat.",
+   "cena": "regar",
+   "enfase": [
+    "heat."
+   ]
+  },
+  {
+   "texto": "Never sure when? There's an app that tells you.",
+   "cena": "app",
+   "enfase": [
+    "app"
+   ]
+  },
+  {
+   "texto": "Link in bio!",
+   "cena": "link"
+  }
+ ],
+ "legenda": "Brown tips on an areca palm are a message, not a death sentence. Dry air and thirsty soil are the usual suspects."
+}

@@ -1,0 +1,155 @@
+# Faz e publica os vídeos dos artigos.
+#
+# 1. «fazer»: quando um plano novo (planos/<endereco>.json) entra no main, valida-o, gera a
+#    voz (Kokoro, sempre a mesma voz feminina), anima e renderiza o MP4, e põe-no numa
+#    pré-release «video-<endereco>» para se ver no telemóvel.
+# 2. «publicar»: espera pela aprovação do Miguel (ambiente «publicacao», com revisor
+#    obrigatório em Settings → Environments) e publica o Reel no Facebook e no Instagram.
+#    Para passar a publicar sozinho: tira o revisor do ambiente.
+#
+# À mão (Actions → videos → Run workflow): refaz o vídeo de um endereço.
+name: videos
+
+on:
+  push:
+    branches: [main]
+    paths: ['planos/*.json']
+  workflow_dispatch:
+    inputs:
+      endereco:
+        description: 'Endereço do artigo (o nome do plano, sem .json)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: videos
+  cancel-in-progress: false
+
+jobs:
+  fazer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      enderecos: ${{ steps.quais.outputs.enderecos }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: Que planos são novos
+        id: quais
+        env:
+          MANUAL: ${{ inputs.endereco }}
+          ANTES: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          if [ -n "${MANUAL:-}" ]; then
+            [[ "$MANUAL" =~ ^[a-z0-9-]+$ ]] || { echo "Endereço inválido"; exit 1; }
+            lista="$MANUAL"
+          else
+            base="${ANTES:-}"
+            if [ -z "$base" ] || ! git cat-file -e "$base" 2>/dev/null; then base=HEAD~1; fi
+            lista=$(git diff --name-only --diff-filter=AM "$base" HEAD -- 'planos/*.json' | sed -E 's#planos/(.*)\.json#\1#' | tr '\n' ' ')
+          fi
+          echo "enderecos=$(echo $lista | xargs)" >> "$GITHUB_OUTPUT"
+          echo "Planos: ${lista:-nenhum}"
+
+      - if: steps.quais.outputs.enderecos != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - if: steps.quais.outputs.enderecos != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - if: steps.quais.outputs.enderecos != ''
+        name: Instalar
+        run: |
+          npm ci
+          pip install -r requirements.txt
+          command -v ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+
+      - if: steps.quais.outputs.enderecos != ''
+        name: Modelo da voz (guardado em cache)
+        uses: actions/cache@v4
+        with:
+          path: kokoro
+          key: kokoro-v1.0
+
+      - if: steps.quais.outputs.enderecos != ''
+        run: |
+          mkdir -p kokoro
+          [ -f kokoro/kokoro.onnx ] || curl -fsSL -o kokoro/kokoro.onnx https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+          [ -f kokoro/voices.bin ] || curl -fsSL -o kokoro/voices.bin https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+
+      - if: steps.quais.outputs.enderecos != ''
+        name: Fazer os vídeos
+        env:
+          ENDERECOS: ${{ steps.quais.outputs.enderecos }}
+          GH_TOKEN: ${{ github.token }}
+          KOKORO_DIR: kokoro
+        run: |
+          set -euo pipefail
+          for e in $ENDERECOS; do
+            echo "::group::$e"
+            node scripts/validar-plano.mjs "planos/$e.json"
+            mkdir -p "saida/$e"
+            python -I scripts/voz.py "planos/$e.json" "saida/$e"
+            node scripts/montar.mjs "saida/$e"
+            cp "planos/$e.json" "saida/$e/plano.json"
+            gh release delete "video-$e" --yes --cleanup-tag 2>/dev/null || true
+            gh release create "video-$e" "saida/$e/video.mp4#$e.mp4" --prerelease \
+              --title "Vídeo: $(node -p "require('./planos/$e.json').artigo.titulo")" \
+              --notes "Por aprovar. Vê o vídeo e aprova em Actions → videos → «Review deployments»." \
+              --target "${GITHUB_SHA}"
+            echo "### $e" >> "$GITHUB_STEP_SUMMARY"
+            echo "[Ver o vídeo](https://github.com/${GITHUB_REPOSITORY}/releases/download/video-$e/$e.mp4)" >> "$GITHUB_STEP_SUMMARY"
+            echo "::endgroup::"
+          done
+
+      - if: steps.quais.outputs.enderecos != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: videos
+          path: |
+            saida/*/video.mp4
+            saida/*/plano.json
+          retention-days: 14
+
+  publicar:
+    needs: fazer
+    if: needs.fazer.outputs.enderecos != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: publicacao
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: videos
+          path: saida
+      - name: Publicar no Facebook e no Instagram
+        env:
+          ENDERECOS: ${{ needs.fazer.outputs.enderecos }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for e in $ENDERECOS; do
+            node scripts/publicar.mjs "saida/$e/plano.json" "saida/$e/video.mp4"
+            gh release edit "video-$e" --prerelease=false --notes "Publicado no Facebook e no Instagram em $(date -u +%F)."
+          done

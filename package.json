@@ -1,0 +1,17 @@
+{
+  "name": "verdejar-videos",
+  "private": true,
+  "type": "module",
+  "description": "Vídeos automáticos dos artigos do Caderno da Verdejar",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "validar": "node scripts/validar-plano.mjs",
+    "exemplo": "python -I scripts/voz.py exemplos/rega.json saida/exemplo && node scripts/montar.mjs saida/exemplo"
+  },
+  "dependencies": {
+    "@fontsource/caveat-brush": "5.3.0",
+    "@fontsource/manrope": "5.3.0",
+    "gsap": "3.15.1",
+    "puppeteer-core": "25.18.1"
+  }
+}
