@@ -3,9 +3,9 @@
 # 1. «fazer»: quando um plano novo (planos/<endereco>.json) entra no main, valida-o, gera a
 #    voz (Kokoro, sempre a mesma voz feminina), anima e renderiza o MP4, e põe-no numa
 #    pré-release «video-<endereco>» para se ver no telemóvel.
-# 2. «publicar»: espera pela aprovação do Miguel (ambiente «publicacao», com revisor
-#    obrigatório em Settings → Environments) e publica o Reel no Facebook e no Instagram.
-#    Para passar a publicar sozinho: tira o revisor do ambiente.
+# 2. «publicar»: publica logo o Reel no Facebook e no Instagram (decisão do Miguel, novembro
+#    de 2026: os vídeos já saem bem, deixou de os aprovar um a um). Para voltar a aprovar
+#    antes de publicar, repõe `environment: publicacao` no job «publicar».
 #
 # À mão (Actions → videos → Run workflow): refaz o vídeo de um endereço.
 name: videos
@@ -109,7 +109,7 @@ jobs:
             gh release delete "video-$e" --yes --cleanup-tag 2>/dev/null || true
             gh release create "video-$e" "saida/$e/video.mp4#$e.mp4" --prerelease \
               --title "Vídeo: $(node -p "require('./planos/$e.json').artigo.titulo")" \
-              --notes "Por aprovar. Vê o vídeo e aprova em Actions → videos → «Review deployments»." \
+              --notes "Feito; a publicar no Facebook e no Instagram." \
               --target "${GITHUB_SHA}"
             echo "### $e" >> "$GITHUB_STEP_SUMMARY"
             echo "[Ver o vídeo](https://github.com/${GITHUB_REPOSITORY}/releases/download/video-$e/$e.mp4)" >> "$GITHUB_STEP_SUMMARY"
@@ -130,7 +130,6 @@ jobs:
     if: needs.fazer.outputs.enderecos != ''
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    environment: publicacao
     steps:
       - uses: actions/checkout@v4
         with:

@@ -5,7 +5,7 @@ no estilo mostarda e pincel da marca, com a voz feminina de sempre e legendas pa
 palavra, publicado como Reel no Facebook e no Instagram.
 
 ```
-tarefa agendada do Claude  →  planos/<endereco>.json  →  GitHub Actions  →  aprovação  →  Reels
+tarefa agendada do Claude  →  planos/<endereco>.json  →  GitHub Actions  →  Reels
    (lê o artigo, escreve        (falas, cenas,            (voz Kokoro,       (Miguel, no     (Facebook +
     o guião com as regras)       plantas)                  animação, MP4)     telemóvel)      Instagram)
 ```
