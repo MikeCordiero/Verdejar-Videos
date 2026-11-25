@@ -30,7 +30,7 @@ código; ficam nos Secrets.
 2. **Aprovação** (Settings → Environments → New environment): nome `publicacao`, marcar
    *Required reviewers* e escolher-te. Cada vídeo pára aí até aprovares (na app GitHub do
    telemóvel chega uma notificação). Para passar a publicar sozinho: desmarcar o revisor.
-3. **Tarefa agendada** (no claude.ai, com este repositório ligado — uma tarefa criada por um
+3. **Tarefa agendada** (no claude.ai, com este repositório **e o Rega-WEB** ligados — o agente lê os artigos no Rega-WEB — uma tarefa criada por um
    agente nasce sem o repositório e falha): todos os dias, por exemplo às 13h de Lisboa,
    uma hora depois dos artigos, com o texto:
 
