@@ -1,8 +1,0 @@
-# O bot imediato do «Comment APP» (Cloudflare Worker). Publica-o o fluxo .github/workflows/bot.yml.
-name = "verdejar-bot"
-main = "bot.js"
-compatibility_date = "2026-11-01"
-workers_dev = true
-
-[vars]
-GRAPH_VERSION = "v21.0"
