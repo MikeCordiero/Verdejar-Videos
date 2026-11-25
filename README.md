@@ -11,7 +11,7 @@ tarefa agendada do Claude  →  planos/<endereco>.json  →  GitHub Actions  →
 ```
 
 - **O guião** é escrito por uma tarefa agendada do Claude, que segue `docs/agente-de-videos.md`
-  (as regras: hook, dois tons, sem «Verdejar», «Link in bio!»…). Para mudar o estilo dos
+  (as regras: hook, dois tons, sem «Verdejar», «Comment APP and I'll send you the app!»…). Para mudar o estilo dos
   guiões, muda-se esse manual.
 - **A voz** é o Kokoro (modelo aberto, Apache 2.0): 70% `af_heart` + 30% `af_bella`, inglês.
   Corre no runner; não há serviço pago nem chave.

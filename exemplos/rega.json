@@ -27,20 +27,20 @@
    ]
   },
   {
-   "texto": "A little splash every day... drowns the roots!",
+   "texto": "A little splash every day drowns the roots!",
    "cena": "copo",
    "enfase": []
   },
   {
-   "texto": "See? The water sits at the bottom.",
+   "texto": "The water just sits at the bottom!",
    "cena": "afogar",
    "enfase": [
-    "bottom."
+    "bottom!"
    ],
    "choque": true
   },
   {
-   "texto": "Stick your finger in the soil. Dry?",
+   "texto": "Stick a finger in the soil. Dry?",
    "cena": "dedo",
    "enfase": [
     "Dry?"
@@ -54,14 +54,14 @@
    ]
   },
   {
-   "texto": "Every plant is different. There's an app that tells you when.",
+   "texto": "Not sure when? There's an app for that.",
    "cena": "app",
    "enfase": [
-    "when."
+    "app"
    ]
   },
   {
-   "texto": "Link in bio!",
+   "texto": "Comment APP and I'll send you the app!",
    "cena": "link"
   }
  ],

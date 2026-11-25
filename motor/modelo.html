@@ -20,7 +20,8 @@ html,body{margin:0;height:100%;background:#2B2620;overflow:hidden}
 .cap .s{font-family:'Caveat Brush';font-weight:400;color:#8A3A1F;font-size:1.42em;letter-spacing:0;line-height:.9;white-space:nowrap}
 .hook{top:170px;font-size:100px;line-height:1.04;letter-spacing:-2.5px}
 .hook .s{font-size:1.75em}
-#pill{position:absolute;left:0;right:0;margin:0 auto;width:max-content;top:250px;background:#FDF8F2;color:#2B2620;font-family:'Manrope';font-weight:800;font-size:84px;letter-spacing:-2px;padding:34px 84px;border-radius:999px;white-space:nowrap;opacity:0}
+#pill{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:900px;top:220px;background:#FDF8F2;color:#2B2620;font-family:'Manrope';font-weight:800;font-size:70px;line-height:1.12;letter-spacing:-1.5px;padding:34px 70px;border-radius:64px;text-align:center;opacity:0}
+#pill .s{font-family:'Caveat Brush';font-weight:400;color:#8A3A1F;font-size:1.35em;letter-spacing:0}
 #luzes{position:absolute;left:0;top:0;width:1080px;height:140px;pointer-events:none;display:none}
 </style>
 </head>
@@ -29,7 +30,7 @@ html,body{margin:0;height:100%;background:#2B2620;overflow:hidden}
   <div id="world"><svg id="scene" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
   <div id="band"></div>
   <svg id="luzes" viewBox="0 0 1080 140"></svg>
-  <div id="txt"><div id="pill">Link in bio!</div></div>
+  <div id="txt"><div id="pill"></div></div>
   <div id="grain"></div>
 </div>
 <audio id="vo" src="%%AUDIO%%" preload="auto"></audio>
@@ -344,7 +345,8 @@ const CENAS={
     const pl=itensL[i].pl;Object.assign(pl.s,{h:.55});T(pl.s,t0+.1,{h:1},.8,'back.out(1.6)');},
   app(b,t0,d,first){irPara(A,t0,[540,870,1.1],first);if(!first){limparCasa(t0);tl.set(plantA.s,{h:1,ill:0},t0);tl.set(st,{fallen:0,soilWet:1,puddle:0},t0);tl.set(sunA,{heat:1,k:1,y:0},t0);}
     T(st,t0,{extras:1},1.1,'power3.out');T(st,t0+.35,{extras2:1},1.1,'power3.out');tl.set(st,{confT:t0},t0);T(st,t0,{confetti:1},.6,'none');cam(A,t0,540,840,1.09,d+2,'sine.inOut');},
-  link(b,t0,d){tl.fromTo('#pill',{opacity:0,y:40,scale:.9},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.5)',immediateRender:false},t0);}
+  link(b,t0,d){const pill=$('#pill');pill.textContent='';(b.texto||'').split(/(\bAPP\b)/).forEach(parte=>{if(parte==='APP'){const s=document.createElement('span');s.className='s';s.textContent='APP';pill.appendChild(s);}else pill.appendChild(document.createTextNode(parte));});
+    tl.fromTo('#pill',{opacity:0,y:40,scale:.9},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.5)',immediateRender:false},t0);}
 };
 PLANO.beats.forEach((b,i)=>{const f=CENAS[b.cena]||CENAS.calma;f(b,b.t0,b.t1-b.t0,i===0);if(b.cena!=='link')legenda(b,i);});
 tl.to({},{duration:.01},DUR-.01);

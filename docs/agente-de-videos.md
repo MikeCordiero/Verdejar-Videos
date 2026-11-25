@@ -32,12 +32,12 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual.
   Stop watering»). Nunca começa com rodeios («Watering a plant isn't easy…»).
 - **Dois tons, um a seguir ao outro.** Depois do hook, a segunda fala acalma e acolhe
   («Relax! It's probably just the watering»). O choque prende; a calma é a marca.
-- **15 a 20 segundos**: 5 a 9 falas, 28 a 52 palavras faladas. Frases curtas.
+- **15 a 20 segundos**: 5 a 9 falas, 26 a 46 palavras faladas (sem contar a última). Frases curtas.
 - **Inglês simples**, tom calmo e acolhedor. Sem superlativos («the best»), sem urgência
   («Download now»).
 - **Nunca dizer «Verdejar»** nem mostrar endereços. O fecho é sempre: uma fala com a cena
   `app` a dizer que há uma app que ajuda (ex.: «Every plant is different. There's an app
-  that tells you when»), e a última fala exatamente `"Link in bio!"` com a cena `link`.
+  that tells you when»), e a última fala exatamente `"Comment APP and I'll send you the app!"` (com APP em maiúsculas) com a cena `link`.
 - **Sem números de rega** («every 7 days»): cada casa é diferente. O gesto certo é «check
   the soil first». Só factos que estejam no artigo; nada inventado.
 - **Pontuação**: escreve as falas com pontuação normal (ajuda a voz). As legendas tiram os
@@ -78,7 +78,7 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual.
 | `feliz` | a planta saudável, com brilhos |
 | `item` | (listas) uma planta da lista, com o nome numa placa; a câmara passa à seguinte |
 | `app` | a planta saudável com outras duas a crescer ao lado (penúltima fala) |
-| `link` | aparece «Link in bio!» (última fala) |
+| `link` | aparece «Comment APP and I'll send you the app!» (última fala) |
 
 ## As plantas
 
@@ -106,11 +106,11 @@ espada-de-são-jorge, ZZ → `espada`; areca, kentia → `palmeira`; abeto, alec
     {"texto": "Or the soil dried out completely.", "cena": "secura", "enfase": ["completely."]},
     {"texto": "Check the soil, water deeply, and move it away from heat.", "cena": "regar", "enfase": ["heat."]},
     {"texto": "Never sure when? There's an app that tells you.", "cena": "app", "enfase": ["app"]},
-    {"texto": "Link in bio!", "cena": "link"}
+    {"texto": "Comment APP and I'll send you the app!", "cena": "link"}
   ]
 }
 ```
 
 `legenda` é o texto do post (1 ou 2 frases, sem ligação, sem hashtags: o sistema
-acrescenta «Read the full article — link in bio» e as hashtags). `artigo.planta` é o nome
+acrescenta «Comment APP and I'll send you the app», a nota do artigo na bio e as hashtags). `artigo.planta` é o nome
 inglês da planta principal (vira a primeira hashtag).

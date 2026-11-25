@@ -15,7 +15,7 @@ from kokoro_onnx import Kokoro
 SR = 24000
 PAUSA = 0.36          # silêncio entre falas
 PAUSA_HOOK = 0.45     # depois do hook, um pouco mais: é a mudança de tom
-CAUDA = 1.4           # o fim fica no ecrã depois da última palavra
+CAUDA = 1.1           # o fim fica no ecrã depois da última palavra
 
 plano_path, saida = sys.argv[1], sys.argv[2]
 os.makedirs(saida, exist_ok=True)
@@ -26,6 +26,7 @@ voz = k.get_voice_style("af_heart") * 0.7 + k.get_voice_style("af_bella") * 0.3
 velocidade = float(os.environ.get("VELOCIDADE", "1.0"))
 
 def pronunciar(txt):
+    txt = re.sub(r"\bAPP\b", "app", txt)  # em maiúsculas só na legenda; a voz diz a palavra, não as letras
     # Nomes que o modelo lê mal entram aqui (o que se ouve: o que se escreve para a voz).
     for a, b in (plano.get("pronuncia") or {}).items():
         txt = re.sub(rf"\b{re.escape(a)}\b", b, txt, flags=re.I)

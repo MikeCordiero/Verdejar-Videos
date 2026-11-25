@@ -27,7 +27,7 @@
    ]
   },
   {
-   "texto": "Dry air from the heater pulls water from the leaves.",
+   "texto": "Dry air from the heater steals water.",
    "cena": "ar-seco",
    "enfase": [
     "heater"
@@ -41,7 +41,7 @@
    ]
   },
   {
-   "texto": "Water when the top inch is dry, and move it away from heat.",
+   "texto": "Water deeply and move it away from heat.",
    "cena": "regar",
    "enfase": [
     "heat."
@@ -55,7 +55,7 @@
    ]
   },
   {
-   "texto": "Link in bio!",
+   "texto": "Comment APP and I'll send you the app!",
    "cena": "link"
   }
  ],
