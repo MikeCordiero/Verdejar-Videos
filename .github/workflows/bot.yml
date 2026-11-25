@@ -21,20 +21,34 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Publicar o worker no Cloudflare
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: worker
-          secrets: |
-            FB_PAGE_TOKEN
-            META_APP_SECRET
-            WEBHOOK_VERIFY_TOKEN
+      - name: Confirmar os Secrets
         env:
+          A: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          B: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          C: ${{ secrets.META_APP_SECRET }}
+          D: ${{ secrets.WEBHOOK_VERIFY_TOKEN }}
+          E: ${{ secrets.FB_PAGE_TOKEN }}
+        run: |
+          falta=""
+          [ -n "$A" ] || falta="$falta CLOUDFLARE_API_TOKEN"; [ -n "$B" ] || falta="$falta CLOUDFLARE_ACCOUNT_ID"
+          [ -n "$C" ] || falta="$falta META_APP_SECRET"; [ -n "$D" ] || falta="$falta WEBHOOK_VERIFY_TOKEN"; [ -n "$E" ] || falta="$falta FB_PAGE_TOKEN"
+          [ -z "$falta" ] || { echo "::error::Faltam os Secrets:$falta (Settings → Secrets and variables → Actions)"; exit 1; }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Publicar o worker no Cloudflare
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
           WEBHOOK_VERIFY_TOKEN: ${{ secrets.WEBHOOK_VERIFY_TOKEN }}
+        run: |
+          set -euo pipefail
+          npm install -g --no-audit --no-fund wrangler@4 > /dev/null
+          wrangler deploy
+          for s in FB_PAGE_TOKEN META_APP_SECRET WEBHOOK_VERIFY_TOKEN; do printf '%s' "${!s}" | wrangler secret put "$s"; done
       - name: Ligar a página aos avisos da Meta
         env:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
