@@ -46,10 +46,10 @@ if (faixa) {
     `[m][sc]sidechaincompress=threshold=0.015:ratio=8:attack=30:release=600[md];` +
     `[v][md]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[out]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-stream_loop', '-1', '-i', join(dirMusica, faixa),
-    '-filter_complex', filtro, '-map', '[out]', '-c:a', 'aac', '-b:a', '160k', join(pasta, 'voz.m4a')]);
+    '-filter_complex', filtro, '-map', '[out]', '-ar', '48000', '-ac', '2', '-c:a', 'aac', '-b:a', '160k', join(pasta, 'voz.m4a')]);
   console.log(`música: ${faixa}`);
 } else {
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-c:a', 'aac', '-b:a', '128k', join(pasta, 'voz.m4a')]);
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-ar', '48000', '-ac', '2', '-c:a', 'aac', '-b:a', '128k', join(pasta, 'voz.m4a')]);
   console.log('música: nenhuma (sem faixas em assets/musica/)');
 }
 const fontes =
@@ -89,6 +89,12 @@ for (let i = 0; i < total; i++) {
 }
 await browser.close();
 execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', join(dir, 'f%05d.jpg'), '-i', join(pasta, 'voz.m4a'),
-  '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', join(pasta, 'video.mp4')]);
+  // No formato que a Meta pede para os Reels: H.264 High 4.1, yuv420p em gama de vídeo (os JPEG
+  // davam yuvj420p, gama total), BT.709, um fotograma-chave a cada 2 s, até 10 Mb/s, e o som AAC
+  // a 48 kHz em estéreo (a voz sai a 24 kHz mono).
+  '-vf', 'scale=out_range=tv:out_color_matrix=bt709,format=yuv420p',
+  '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '19', '-maxrate', '10M', '-bufsize', '20M', '-profile:v', 'high', '-level', '4.1',
+  '-color_range', 'tv', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-g', String(FPS * 2),
+  '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-ac', '2', '-shortest', '-movflags', '+faststart', join(pasta, 'video.mp4')]);
 rmSync(dir, { recursive: true, force: true });
 console.log(`vídeo: ${join(pasta, 'video.mp4')} (${plano.duracao} s)`);

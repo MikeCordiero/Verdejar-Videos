@@ -7,7 +7,8 @@
 #    de 2026: os vídeos já saem bem, deixou de os aprovar um a um). Para voltar a aprovar
 #    antes de publicar, repõe `environment: publicacao` no job «publicar».
 #
-# À mão (Actions → videos → Run workflow): refaz o vídeo de um endereço.
+# À mão (Actions → videos → Run workflow): refaz o vídeo de um endereço e publica-o; com
+# «só Instagram» ligado, não o põe outra vez no Facebook (para quando o Instagram falhou).
 name: videos
 
 on:
@@ -21,6 +22,11 @@ on:
         description: 'Endereço do artigo (o nome do plano, sem .json)'
         required: true
         type: string
+      so_instagram:
+        description: 'Publicar só no Instagram (o vídeo já está no Facebook)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -147,9 +153,11 @@ jobs:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           GH_TOKEN: ${{ github.token }}
+          SO_INSTAGRAM: ${{ inputs.so_instagram && '1' || '' }}
         run: |
           set -euo pipefail
           for e in $ENDERECOS; do
+            export VIDEO_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/video-$e/$e.mp4"
             node scripts/publicar.mjs "saida/$e/plano.json" "saida/$e/video.mp4"
             gh release edit "video-$e" --prerelease=false --notes "Publicado no Facebook e no Instagram em $(date -u +%F)."
           done
