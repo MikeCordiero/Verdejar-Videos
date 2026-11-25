@@ -1,4 +1,4 @@
-# O bot do «Comment APP»: de 15 em 15 minutos, manda a ligação da app por mensagem a quem
+# O bot do «Comment APP»: de 5 em 5 minutos, manda a ligação da app por mensagem a quem
 # comentou APP num Reel (Instagram e Facebook) e responde ao comentário.
 # Só corre com a variável BOT_ATIVO = true (Settings → Secrets and variables → Actions →
 # Variables), depois de a app da Meta ter as permissões de mensagens (ver README).
@@ -7,7 +7,7 @@ name: responder
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       enviar:

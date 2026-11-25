@@ -68,7 +68,7 @@ Abrir `saida/rega/video.html` no browser também mostra o vídeo (com som e em l
 **Imediato:** um pequeno serviço no Cloudflare (`worker/bot.js`) recebe da Meta o aviso de cada
 comentário no instante em que é feito e, se disser «APP», responde logo por mensagem privada
 (cartão com «Get the app» e «Follow us») e em público («Sent! Check your messages 📩»).
-**Rede de segurança:** o fluxo `responder` passa de 15 em 15 minutos e trata o que tiver
+**Rede de segurança:** o fluxo `responder` passa de 5 em 5 minutos e trata o que tiver
 escapado (com `BOT_ATIVO` = `true`); salta os comentários a que o bot imediato já respondeu.
 
 Para ligar o imediato (uma vez):
@@ -84,7 +84,7 @@ Para ligar o imediato (uma vez):
    esse endereço + `/webhook`, Verify token = o `WEBHOOK_VERIFY_TOKEN` → *Verify and save* →
    subscrever o campo **comments**.
 
-O fluxo `responder` (de 15 em 15 minutos) procura nos Reels dos últimos 30 dias comentários
+O fluxo `responder` (de 5 em 5 minutos) procura nos Reels dos últimos 30 dias comentários
 com «APP», manda a quem comentou uma mensagem privada com a ligação da App Store e responde
 ao comentário («Sent! Check your messages 📩»). Cada comentário só recebe uma vez
 (`estado/respondidos.json`). A Meta só deixa responder em privado até 7 dias depois do

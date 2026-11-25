@@ -1,7 +1,7 @@
 // Bot imediato do «Comment APP». A Meta avisa este endereço (webhook) no instante em que alguém
 // comenta no Instagram da Verdejar; se o comentário disser APP, responde logo por mensagem privada
 // (cartão com «Get the app» e «Follow us») e responde ao comentário em público.
-// O fluxo «responder» (de 15 em 15 min) fica como rede de segurança, para algum aviso que falhe.
+// O fluxo «responder» (de 5 em 5 min) fica como rede de segurança, para algum aviso que falhe.
 // Os textos são os mesmos de scripts/responder.mjs: muda-se um, muda-se o outro.
 //
 // Segredos (wrangler secret, postos pelo fluxo bot.yml): FB_PAGE_TOKEN, META_APP_SECRET,
