@@ -58,8 +58,9 @@ if (ig) {
   }
 } else console.log('A página não tem Instagram profissional ligado.');
 
-// Facebook (os Reels da página)
-try {
+// Facebook (os Reels da página): só com BOT_FACEBOOK=1, porque precisa de pages_messaging
+// (caso de utilização do Messenger na app da Meta). O Instagram chega para começar.
+if (process.env.BOT_FACEBOOK === '1') try {
   const reels = await get(`/${FB_PAGE_ID}/video_reels?fields=id,created_time&limit=30`);
   for (const r of reels.data || []) {
     if (!recente(r.created_time, DIAS_MEDIA * 24)) continue;

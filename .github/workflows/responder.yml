@@ -37,6 +37,7 @@ jobs:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           REAL: ${{ (github.event_name == 'schedule' || inputs.enviar) && '1' || '0' }}
+          BOT_FACEBOOK: ${{ vars.BOT_FACEBOOK }}
         run: node scripts/responder.mjs
       - name: Guardar quem já recebeu
         if: always()

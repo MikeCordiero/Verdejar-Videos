@@ -71,11 +71,12 @@ comentário.
 
 Para o ligar:
 
-1. **Permissões na app da Meta** (developers.facebook.com → a tua app → App Review →
-   Permissions and Features): `instagram_basic`, `instagram_manage_comments`,
-   `instagram_manage_messages`, `pages_messaging`, `pages_read_engagement` e
-   `pages_manage_engagement`. Para funcionar com qualquer pessoa (e não só com quem tem papel
-   na app), estas precisam de **Advanced Access**, que a Meta dá depois de uma revisão.
+1. **Permissões na app da Meta**: no caso de utilização «Manage messaging & content on
+   Instagram» têm de estar `instagram_basic`, `instagram_manage_comments` e
+   `instagram_manage_messages` (já estão). Chega para o Instagram. Para responder também no
+   Facebook é preciso o caso «Engage with customers on Messenger» (`pages_messaging`) e a
+   variável `BOT_FACEBOOK` = `1`. Para funcionar com qualquer pessoa (e não só com quem tem
+   papel na app), as permissões precisam de **Advanced Access**, e a app de ser publicada.
 2. **Gerar de novo o token da página** com essas permissões e atualizar o Secret `FB_PAGE_TOKEN`
    (aqui e no Rega-WEB, se for o mesmo).
 3. **No Instagram**: Definições → Privacidade → Mensagens → Ferramentas ligadas → permitir
