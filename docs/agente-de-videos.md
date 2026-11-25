@@ -30,9 +30,10 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual.
   («Why is your plant dying?»), uma provocação («You're watering it wrong»), uma lista
   com curiosidade («3 plants that bloom at Christmas»), um contraintuitivo («Yellow leaves?
   Stop watering»). Nunca começa com rodeios («Watering a plant isn't easy…»).
+- **O hook e a fala seguinte são os mais expressivos** (a voz dá-lhes mais energia sozinha): o hook acaba em `?` ou `!`, e a segunda fala começa por uma interjeição com `!` («Relax!», «Don't panic!», «Good news!»). A pontuação é o que dá a entoação à voz.
 - **Dois tons, um a seguir ao outro.** Depois do hook, a segunda fala acalma e acolhe
   («Relax! It's probably just the watering»). O choque prende; a calma é a marca.
-- **15 a 45 segundos, com calma**: 5 a 12 falas, 22 a 80 palavras faladas (sem contar a última). A voz já fala devagar e com pausas; frases curtas, uma ideia por fala. Mais curto é melhor quando o artigo é simples: não se enche para chegar aos 45.
+- **15 a 45 segundos, com calma**: 5 a 12 falas, 22 a 80 palavras faladas (sem contar a última). A voz fala ao ritmo normal, com pausas grandes entre frases e entre falas; frases curtas, uma ideia por fala. Mais curto é melhor quando o artigo é simples: não se enche para chegar aos 45.
 - **Inglês simples**, tom calmo e acolhedor. Sem superlativos («the best»), sem urgência
   («Download now»).
 - **Nunca dizer «Verdejar»** nem mostrar endereços. O fecho é sempre: uma fala com a cena

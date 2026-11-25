@@ -7,7 +7,7 @@ inglês americano. Cada fala é gerada à parte, para se saber exatamente onde c
 acaba; as palavras são distribuídas dentro da fala pelo comprimento (o Kokoro não dá
 tempos por palavra). Escreve voz.wav e tempos.json.
 """
-import json, os, re, sys
+import json, os, re, subprocess, sys, tempfile
 import numpy as np
 import soundfile as sf
 from kokoro_onnx import Kokoro
@@ -15,7 +15,7 @@ from kokoro_onnx import Kokoro
 SR = 24000
 PAUSA = 0.75          # silêncio entre falas (o Miguel quer o ritmo pausado)
 PAUSA_HOOK = 0.95     # depois do hook, mais: é a mudança de tom
-PAUSA_FRASE = 0.38    # entre frases dentro da mesma fala ("Relax! It's…")
+PAUSA_FRASE = 0.5     # entre frases dentro da mesma fala ("Relax! It's…")
 CAUDA = 1.6           # o fim fica no ecrã depois da última palavra
 
 plano_path, saida = sys.argv[1], sys.argv[2]
@@ -23,8 +23,12 @@ os.makedirs(saida, exist_ok=True)
 plano = json.load(open(plano_path, encoding="utf-8"))
 kdir = os.environ.get("KOKORO_DIR", "kokoro")
 k = Kokoro(os.path.join(kdir, "kokoro.onnx"), os.path.join(kdir, "voices.bin"))
-voz = k.get_voice_style("af_heart") * 0.7 + k.get_voice_style("af_bella") * 0.3
-velocidade = float(os.environ.get("VELOCIDADE", "0.9"))
+heart, bella = k.get_voice_style("af_heart"), k.get_voice_style("af_bella")
+voz = heart * 0.7 + bella * 0.3
+# Mais expressão no hook e na fala seguinte (o Miguel): a mesma voz, com mais af_bella (mais viva),
+# o hook um pouco mais rápido e agudo, a resposta calma um pouco mais lenta e quente.
+EXPRESSAO = {0: (heart * 0.4 + bella * 0.6, 1.06, 1.035), 1: (heart * 0.5 + bella * 0.5, 0.96, 1.0)}
+velocidade = float(os.environ.get("VELOCIDADE", "1.0"))
 
 def pronunciar(txt):
     txt = re.sub(r"\bAPP\b", "app", txt)  # em maiúsculas só na legenda; a voz diz a palavra, não as letras
@@ -34,9 +38,19 @@ def pronunciar(txt):
     return txt
 
 partes, t = [np.zeros(int(0.12 * SR), np.float32)], 0.12
-def narrar(txt, vel):
-    s, _ = k.create(pronunciar(txt), voice=voz, speed=vel, lang="en-us")
+def afinar(s, f):
+    # sobe o tom sem mudar a duração (ffmpeg: asetrate + atempo)
+    with tempfile.TemporaryDirectory() as d:
+        a, b = os.path.join(d, "a.wav"), os.path.join(d, "b.wav")
+        sf.write(a, s, SR)
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", a, "-af", f"asetrate={int(SR * f)},aresample={SR},atempo={1 / f:.5f}", b], check=True)
+        return sf.read(b, dtype="float32")[0]
+
+def narrar(txt, vel, estilo=None, tom=1.0):
+    s, _ = k.create(pronunciar(txt), voice=voz if estilo is None else estilo, speed=vel, lang="en-us")
     s = s.astype(np.float32)
+    if tom != 1.0:
+        s = afinar(s, tom)
     nz = np.where(np.abs(s) > 0.01)[0]   # aparar o silêncio das pontas
     return s[max(0, nz[0] - 240): nz[-1] + 480] if len(nz) else s
 
@@ -44,13 +58,14 @@ def pesos(ws):
     return [max(2, len(re.sub(r"[^A-Za-z0-9]", "", w))) + 1.5 for w in ws]
 
 for i, b in enumerate(plano["beats"]):
-    vel = velocidade * float(b.get("velocidade", 1.0))
+    estilo, vmul, tom = EXPRESSAO.get(i, (None, 1.0, 1.0))
+    vel = velocidade * vmul * float(b.get("velocidade", 1.0))
     # Cada frase da fala é narrada à parte, com uma pausa curta entre elas: dá o ritmo calmo
     # e sabe-se onde começa cada frase (as palavras ficam mais certas com a voz).
     frases = [f for f in re.split(r"(?<=[.!?])\s+", b["texto"].strip()) if f]
     b["t0"], b["palavras"] = round(t, 3), []
     for j, fr in enumerate(frases):
-        s = narrar(fr, vel)
+        s = narrar(fr, vel, estilo, tom)
         dur = len(s) / SR
         ws = fr.split(); ps = pesos(ws); tot, acc = sum(ps), 0.0
         for w, p in zip(ws, ps):
