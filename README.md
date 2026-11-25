@@ -15,6 +15,8 @@ tarefa agendada do Claude  →  planos/<endereco>.json  →  GitHub Actions  →
   guiões, muda-se esse manual.
 - **A voz** é o Kokoro (modelo aberto, Apache 2.0): 70% `af_heart` + 30% `af_bella`, inglês.
   Corre no runner; não há serviço pago nem chave.
+- **A música de fundo** são faixas da Meta Sound Collection em `assets/musica/` (ver o
+  `LEIA-ME.md` de lá): uma por vídeo, baixinha e a baixar quando a voz fala. Sem faixas, só a voz.
 - **A animação** é `motor/modelo.html`: seis formas de planta, dezasseis cenas, três palcos.
   Tudo é função do tempo da timeline (o mesmo fotograma sai sempre igual).
 - **A publicação** usa os mesmos Secrets da página que o Rega-WEB (`FB_PAGE_ID`,

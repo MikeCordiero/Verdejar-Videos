@@ -1,8 +1,9 @@
 // Monta e renderiza um vídeo a partir dos tempos da voz.
 // Uso: node scripts/montar.mjs <pasta> [--so-html] [--fotogramas t1,t2,…]
 // Lê <pasta>/tempos.json e <pasta>/voz.wav; escreve <pasta>/video.html e <pasta>/video.mp4.
-import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync, readdirSync } from 'node:fs';
+import { join, resolve, basename } from 'node:path';
+import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
@@ -24,7 +25,33 @@ plano.beats.forEach((b, i) => {
   if (prox?.cena === 'link') b.fimLegenda = prox.t0 - 0.1;
 });
 
-execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-c:a', 'aac', '-b:a', '128k', join(pasta, 'voz.m4a')]);
+// Música de fundo (faixas da Meta Sound Collection em assets/musica/). Escolhe uma pelo endereço
+// do artigo (o mesmo artigo dá sempre a mesma faixa; artigos diferentes vão rodando entre elas).
+// A música é igualada em volume (loudnorm), fica bem por baixo da voz e baixa ainda mais
+// sempre que a voz fala (sidechaincompress); entra e sai em fade. Sem faixas: só a voz.
+// MUSICA=<ficheiro> escolhe uma à mão; MUSICA=nenhuma tira-a.
+const dirMusica = join(raiz, 'assets/musica');
+const faixas = existsSync(dirMusica) ? readdirSync(dirMusica).filter((f) => /\.(mp3|m4a|aac|wav|ogg|flac)$/i.test(f)).sort() : [];
+const chave = plano.artigo?.endereco || basename(pasta);
+let faixa = null;
+if (process.env.MUSICA === 'nenhuma') faixa = null;
+else if (process.env.MUSICA) faixa = faixas.find((f) => f === basename(process.env.MUSICA)) ?? (() => { throw new Error(`MUSICA: não há ${process.env.MUSICA} em assets/musica/`); })();
+else if (faixas.length) faixa = faixas[createHash('sha256').update(chave).digest().readUInt32BE(0) % faixas.length];
+if (faixa) {
+  const d = plano.duracao, fim = Math.max(0, d - 2.5).toFixed(2);
+  const filtro =
+    `[1:a]aformat=sample_rates=48000:channel_layouts=stereo,loudnorm=I=-30:TP=-6:LRA=11,atrim=0:${d},asetpts=N/SR/TB,` +
+    `afade=t=in:d=0.8,afade=t=out:st=${fim}:d=2.5[m];` +
+    `[0:a]aformat=sample_rates=48000:channel_layouts=stereo,asplit=2[v][sc];` +
+    `[m][sc]sidechaincompress=threshold=0.015:ratio=8:attack=30:release=600[md];` +
+    `[v][md]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[out]`;
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-stream_loop', '-1', '-i', join(dirMusica, faixa),
+    '-filter_complex', filtro, '-map', '[out]', '-c:a', 'aac', '-b:a', '160k', join(pasta, 'voz.m4a')]);
+  console.log(`música: ${faixa}`);
+} else {
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', join(pasta, 'voz.wav'), '-c:a', 'aac', '-b:a', '128k', join(pasta, 'voz.m4a')]);
+  console.log('música: nenhuma (sem faixas em assets/musica/)');
+}
 const fontes =
   ['700', '800'].map((w) => `@font-face{font-family:'Manrope';font-weight:${w};src:url(data:font/woff2;base64,${b64(join(nm, `@fontsource/manrope/files/manrope-latin-${w}-normal.woff2`))}) format('woff2')}`).join('') +
   `@font-face{font-family:'Caveat Brush';font-weight:400;src:url(data:font/woff2;base64,${b64(join(nm, '@fontsource/caveat-brush/files/caveat-brush-latin-400-normal.woff2'))}) format('woff2')}`;
