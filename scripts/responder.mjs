@@ -13,8 +13,9 @@ const LIGACAO = 'https://apps.apple.com/app/verdejar/id6825218751'; // a mesma d
 const MENSAGEM = `Hi! 🌱 Here's the link: ${LIGACAO}\n\nThe app tells you when each of your plants needs water, based on where it lives.`;
 const RESPOSTA = 'Sent! Check your messages 📩';
 const CARTAO_TITULO = 'Your plant-care app 🌱';
-const CARTAO_TEXTO = 'Know when each of your plants needs water. Follow us for a new plant tip every day!';
-const CARTAO_IMAGEM = 'https://verdejarapp.com/partilha-en.png';
+const CARTAO_TEXTO = 'Free on the App Store. Follow us for a new plant tip every day!';
+// A imagem do cartão (1200×628, a proporção que o Instagram mostra) vive neste repositório público.
+const CARTAO_IMAGEM = 'https://raw.githubusercontent.com/MikeCordiero/Verdejar-Videos/main/assets/cartao-mensagem.png';
 const PALAVRA = /\bapp\b/i;          // «APP», «app», «App please»…
 const DIAS_MEDIA = 30;                // Reels publicados há menos de 30 dias
 const JANELA_H = 7 * 24 - 2;          // a Meta só deixa a resposta privada até 7 dias depois do comentário
