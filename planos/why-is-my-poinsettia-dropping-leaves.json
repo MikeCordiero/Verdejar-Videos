@@ -1,0 +1,19 @@
+{
+  "artigo": {"endereco": "why-is-my-poinsettia-dropping-leaves", "titulo": "Why is my poinsettia dropping leaves?", "planta": "Poinsettia"},
+  "modelo": "sintoma",
+  "natal": true,
+  "planta": {"forma": "flor", "vaso": "creme", "corFlor": "vermelho", "bracteas": true},
+  "legenda": "A poinsettia dropping leaves is reacting to something that changed. Cold draughts, soggy or bone-dry compost and low light are the usual causes.",
+  "beats": [
+    {"texto": "Your poinsettia is dropping leaves?!", "cena": "triste", "enfase": ["dropping"], "choque": true},
+    {"texto": "Don't panic! It's not giving up.", "cena": "calma", "enfase": ["giving up."]},
+    {"texto": "Sudden wilting after a cold night?! It got a chill.", "cena": "frio", "enfase": ["chill."], "choque": true},
+    {"texto": "Keep it away from cold glass and open doors.", "cena": "frio", "enfase": ["doors."]},
+    {"texto": "Yellow lower leaves and damp compost?! Too much water.", "cena": "afogar", "enfase": ["water."]},
+    {"texto": "Take off the foil sleeve so it can drain.", "cena": "afogar", "enfase": ["sleeve"]},
+    {"texto": "Curled leaves and dry compost?! It's thirsty.", "cena": "secura", "enfase": ["thirsty."]},
+    {"texto": "So check the compost first, then water well.", "cena": "dedo", "seco": true, "enfase": ["first,"]},
+    {"texto": "Every spot is different. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
