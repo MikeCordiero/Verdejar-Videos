@@ -32,6 +32,7 @@ const post = (c, corpo) => graph(`${c}?access_token=${tok}`, { method: 'POST', h
 const recente = (iso, horas) => Date.now() - new Date(iso).getTime() < horas * 3600e3;
 
 let enviados = 0, erros = 0;
+let ig = null;
 async function tratar(rede, c, eu) {
   if (feitos.has(c.id) || !PALAVRA.test(c.text || c.message || '')) return;
   if (eu && (c.username === eu || c.from?.id === FB_PAGE_ID)) return;           // os nossos próprios comentários
@@ -39,8 +40,14 @@ async function tratar(rede, c, eu) {
   console.log(`${rede}: comentário ${c.id} («${(c.text || c.message || '').slice(0, 40)}»)`);
   if (!REAL) return;
   try {
-    // Resposta privada a um comentário: a mesma chamada serve o Instagram e o Facebook.
-    await post(`/${FB_PAGE_ID}/messages`, { recipient: { comment_id: c.id }, message: { text: MENSAGEM } });
+    // Resposta privada a um comentário. No Instagram (Facebook Login) a chamada é no ID da conta
+    // de Instagram e só pede instagram_manage_messages; a da página pedia pages_messaging, que o
+    // token não tem (a Meta respondia «500: An unknown error»). Se falhar, tenta-se a da página.
+    const corpo = { recipient: { comment_id: c.id }, message: { text: MENSAGEM } };
+    if (rede === 'instagram') {
+      try { await post(`/${ig.id}/messages`, corpo); }
+      catch (e1) { console.log(`  (pela conta de Instagram falhou: ${e1.message}; tento pela página)`); await post(`/${FB_PAGE_ID}/messages`, corpo); }
+    } else await post(`/${FB_PAGE_ID}/messages`, corpo);
     try { await post(`/${c.id}/${rede === 'instagram' ? 'replies' : 'comments'}`, { message: RESPOSTA }); } catch (e) { console.log(`  (não consegui responder em público: ${e.message})`); }
     feitos.add(c.id); enviados++;
   } catch (e) { erros++; console.error(`  falhou: ${e.message}`); }
@@ -48,7 +55,7 @@ async function tratar(rede, c, eu) {
 
 // Instagram
 const pag = await get(`/${FB_PAGE_ID}?fields=instagram_business_account{id,username}`);
-const ig = pag.instagram_business_account;
+ig = pag.instagram_business_account;
 if (ig) {
   const media = await get(`/${ig.id}/media?fields=id,media_product_type,timestamp&limit=30`);
   for (const m of media.data || []) {
