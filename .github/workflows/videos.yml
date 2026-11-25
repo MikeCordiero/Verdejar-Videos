@@ -12,7 +12,8 @@ name: videos
 
 on:
   push:
-    branches: [main]
+    # main, ou os ramos claude/… (a tarefa agendada, por omissão, só pode empurrar para esses)
+    branches: [main, 'claude/**']
     paths: ['planos/*.json']
   workflow_dispatch:
     inputs:

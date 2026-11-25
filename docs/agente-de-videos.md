@@ -11,15 +11,19 @@ Responde e escreve os commits em português de Portugal. As falas do vídeo são
 
 1. Abre `https://verdejarapp.com/journal/` e vê os artigos mais recentes (os primeiros da lista).
 2. Para cada artigo, o endereço é o fim do URL (`/journal/<endereco>/`). Um artigo já está
-   tratado se existir `planos/<endereco>.json` ou se o endereço estiver em
-   `planos/ignorados.txt`. Ignora artigos publicados antes de **2026-11-25** (a data está na
+   tratado se existir `planos/<endereco>.json`, se o endereço estiver em
+   `planos/ignorados.txt`, ou se já houver a etiqueta `video-<endereco>` no GitHub
+   (`git ls-remote --tags origin 'video-*'`: o vídeo já foi feito, mesmo que o plano tenha
+   ido por outro ramo). Ignora artigos publicados antes de **2026-11-25** (a data está na
    página do artigo).
 3. Escolhe no máximo **2** artigos por tratar (os mais antigos primeiro). Se não houver
    nenhum, termina sem fazer nada.
 4. Lê o artigo inteiro e escreve `planos/<endereco>.json` seguindo as regras abaixo.
 5. Corre `node scripts/validar-plano.mjs planos/<endereco>.json`. Corrige até dizer `OK`.
 6. Acrescenta uma linha a `docs/registo-de-videos.md` (data, endereço, modelo, hook).
-7. Faz commit (`Plano de vídeo: <título do artigo>`) e push para o `main`. Termina.
+7. Faz commit (`Plano de vídeo: <título do artigo>`) e push para o `main`. Se o push para o
+   `main` for recusado (a tarefa só pode empurrar para ramos `claude/`), empurra para um ramo
+   `claude/video-<endereco>`: o GitHub faz o vídeo na mesma. Não abras pull request. Termina.
 
 Não toques em `scripts/`, `motor/`, `.github/` nem neste manual.
 
