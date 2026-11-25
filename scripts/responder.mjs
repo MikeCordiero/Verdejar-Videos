@@ -10,8 +10,11 @@ const REAL = process.env.REAL === '1';
 const V = process.env.GRAPH_VERSION || 'v21.0';
 const GRAPH = `https://graph.facebook.com/${V}`;
 const LIGACAO = 'https://apps.apple.com/app/verdejar/id6825218751'; // a mesma de LOJAS.appStore.en no Rega-WEB
-const MENSAGEM = `Hi! 🌱 Here's the link: ${LIGACAO}\n\nThe app tells you when each of your plants needs water, based on where it lives. Follow us for a new plant tip every day!`;
+const MENSAGEM = `Hi! 🌱 Here's the link: ${LIGACAO}\n\nThe app tells you when each of your plants needs water, based on where it lives.`;
 const RESPOSTA = 'Sent! Check your messages 📩';
+const CARTAO_TITULO = 'Your plant-care app 🌱';
+const CARTAO_TEXTO = 'Know when each of your plants needs water. Follow us for a new plant tip every day!';
+const CARTAO_IMAGEM = 'https://verdejarapp.com/partilha-en.png';
 const PALAVRA = /\bapp\b/i;          // «APP», «app», «App please»…
 const DIAS_MEDIA = 30;                // Reels publicados há menos de 30 dias
 const JANELA_H = 7 * 24 - 2;          // a Meta só deixa a resposta privada até 7 dias depois do comentário
@@ -43,11 +46,21 @@ async function tratar(rede, c, eu) {
     // Resposta privada a um comentário. No Instagram (Facebook Login) a chamada é no ID da conta
     // de Instagram e só pede instagram_manage_messages; a da página pedia pages_messaging, que o
     // token não tem (a Meta respondia «500: An unknown error»). Se falhar, tenta-se a da página.
-    const corpo = { recipient: { comment_id: c.id }, message: { text: MENSAGEM } };
-    if (rede === 'instagram') {
-      try { await post(`/${ig.id}/messages`, corpo); }
-      catch (e1) { console.log(`  (pela conta de Instagram falhou: ${e1.message}; tento pela página)`); await post(`/${FB_PAGE_ID}/messages`, corpo); }
-    } else await post(`/${FB_PAGE_ID}/messages`, corpo);
+    // A mensagem vai como cartão com dois botões (a app e seguir a página). A Meta só deixa UMA
+    // resposta privada por comentário: se o cartão for recusado, manda-se o texto com as duas ligações.
+    const perfil = rede === 'instagram' && ig?.username ? `https://www.instagram.com/${ig.username}/` : `https://www.facebook.com/${FB_PAGE_ID}`;
+    const cartao = { attachment: { type: 'template', payload: { template_type: 'generic', elements: [{
+      title: CARTAO_TITULO, subtitle: CARTAO_TEXTO, image_url: CARTAO_IMAGEM,
+      default_action: { type: 'web_url', url: LIGACAO },
+      buttons: [{ type: 'web_url', url: LIGACAO, title: 'Get the app' }, { type: 'web_url', url: perfil, title: 'Follow us' }] }] } } };
+    const texto = { text: `${MENSAGEM}\n\n👉 Follow us: ${perfil}` };
+    const destino = rede === 'instagram' ? `/${ig.id}/messages` : `/${FB_PAGE_ID}/messages`;
+    try { await post(destino, { recipient: { comment_id: c.id }, message: cartao }); }
+    catch (e1) {
+      console.log(`  (o cartão com botões foi recusado: ${e1.message}; mando em texto)`);
+      try { await post(destino, { recipient: { comment_id: c.id }, message: texto }); }
+      catch (e2) { if (rede !== 'instagram') throw e2; console.log(`  (pela conta de Instagram falhou: ${e2.message}; tento pela página)`); await post(`/${FB_PAGE_ID}/messages`, { recipient: { comment_id: c.id }, message: texto }); }
+    }
     try { await post(`/${c.id}/${rede === 'instagram' ? 'replies' : 'comments'}`, { message: RESPOSTA }); } catch (e) { console.log(`  (não consegui responder em público: ${e.message})`); }
     feitos.add(c.id); enviados++;
   } catch (e) { erros++; console.error(`  falhou: ${e.message}`); }
