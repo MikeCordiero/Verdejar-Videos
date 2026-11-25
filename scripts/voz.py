@@ -13,9 +13,10 @@ import soundfile as sf
 from kokoro_onnx import Kokoro
 
 SR = 24000
-PAUSA = 0.36          # silêncio entre falas
-PAUSA_HOOK = 0.45     # depois do hook, um pouco mais: é a mudança de tom
-CAUDA = 1.1           # o fim fica no ecrã depois da última palavra
+PAUSA = 0.75          # silêncio entre falas (o Miguel quer o ritmo pausado)
+PAUSA_HOOK = 0.95     # depois do hook, mais: é a mudança de tom
+PAUSA_FRASE = 0.38    # entre frases dentro da mesma fala ("Relax! It's…")
+CAUDA = 1.6           # o fim fica no ecrã depois da última palavra
 
 plano_path, saida = sys.argv[1], sys.argv[2]
 os.makedirs(saida, exist_ok=True)
@@ -23,7 +24,7 @@ plano = json.load(open(plano_path, encoding="utf-8"))
 kdir = os.environ.get("KOKORO_DIR", "kokoro")
 k = Kokoro(os.path.join(kdir, "kokoro.onnx"), os.path.join(kdir, "voices.bin"))
 voz = k.get_voice_style("af_heart") * 0.7 + k.get_voice_style("af_bella") * 0.3
-velocidade = float(os.environ.get("VELOCIDADE", "1.0"))
+velocidade = float(os.environ.get("VELOCIDADE", "0.9"))
 
 def pronunciar(txt):
     txt = re.sub(r"\bAPP\b", "app", txt)  # em maiúsculas só na legenda; a voz diz a palavra, não as letras
@@ -33,24 +34,32 @@ def pronunciar(txt):
     return txt
 
 partes, t = [np.zeros(int(0.12 * SR), np.float32)], 0.12
-for i, b in enumerate(plano["beats"]):
-    s, _ = k.create(pronunciar(b["texto"]), voice=voz, speed=velocidade * float(b.get("velocidade", 1.0)), lang="en-us")
+def narrar(txt, vel):
+    s, _ = k.create(pronunciar(txt), voice=voz, speed=vel, lang="en-us")
     s = s.astype(np.float32)
-    # aparar silêncio das pontas
-    nz = np.where(np.abs(s) > 0.01)[0]
-    if len(nz):
-        s = s[max(0, nz[0] - 240): nz[-1] + 480]
-    dur = len(s) / SR
-    b["t0"], b["t1"] = round(t, 3), round(t + dur, 3)
-    palavras = b["texto"].split()
-    pesos = [max(2, len(re.sub(r"[^A-Za-z0-9]", "", w))) + 1.5 for w in palavras]
-    tot, acc = sum(pesos), 0.0
-    b["palavras"] = []
-    for w, p in zip(palavras, pesos):
-        b["palavras"].append([w, round(t + dur * acc / tot, 3)])
-        acc += p
-    partes.append(s)
-    t += dur
+    nz = np.where(np.abs(s) > 0.01)[0]   # aparar o silêncio das pontas
+    return s[max(0, nz[0] - 240): nz[-1] + 480] if len(nz) else s
+
+def pesos(ws):
+    return [max(2, len(re.sub(r"[^A-Za-z0-9]", "", w))) + 1.5 for w in ws]
+
+for i, b in enumerate(plano["beats"]):
+    vel = velocidade * float(b.get("velocidade", 1.0))
+    # Cada frase da fala é narrada à parte, com uma pausa curta entre elas: dá o ritmo calmo
+    # e sabe-se onde começa cada frase (as palavras ficam mais certas com a voz).
+    frases = [f for f in re.split(r"(?<=[.!?])\s+", b["texto"].strip()) if f]
+    b["t0"], b["palavras"] = round(t, 3), []
+    for j, fr in enumerate(frases):
+        s = narrar(fr, vel)
+        dur = len(s) / SR
+        ws = fr.split(); ps = pesos(ws); tot, acc = sum(ps), 0.0
+        for w, p in zip(ws, ps):
+            b["palavras"].append([w, round(t + dur * acc / tot, 3)])
+            acc += p
+        partes.append(s); t += dur
+        if j < len(frases) - 1:
+            partes.append(np.zeros(int(PAUSA_FRASE * SR), np.float32)); t += PAUSA_FRASE
+    b["t1"] = round(t, 3)
     pausa = PAUSA_HOOK if i == 0 else PAUSA
     partes.append(np.zeros(int(pausa * SR), np.float32))
     t += pausa

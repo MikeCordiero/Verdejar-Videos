@@ -32,7 +32,7 @@ export function validar(p, ficheiro = '') {
   ok(typeof p.legenda === 'string' && p.legenda.length >= 20 && p.legenda.length <= 300, 'legenda (o texto do post, 20 a 300 caracteres) em falta');
   ok(!/https?:|www\./i.test(p.legenda || ''), 'a legenda não leva ligações (o Instagram não as abre; a ligação está na bio)');
   const beats = Array.isArray(p.beats) ? p.beats : [];
-  ok(beats.length >= 5 && beats.length <= 9, 'entre 5 e 9 falas (beats)');
+  ok(beats.length >= 5 && beats.length <= 12, 'entre 5 e 12 falas (beats)');
   let palavras = 0;
   beats.forEach((b, i) => {
     const onde = `fala ${i + 1}`;
@@ -55,7 +55,7 @@ export function validar(p, ficheiro = '') {
     const nomes = new Set(beats.filter((b) => b.cena === 'item').map((b) => (b.item?.nome || '').toLowerCase()));
     ok(nomes.size >= 2 && nomes.size <= 4, 'uma lista mostra entre 2 e 4 plantas diferentes (cenas "item")');
   }
-  ok(palavras >= 26 && palavras <= 46, `entre 26 e 46 palavras faladas para caber em 15–20 s (tem ${palavras})`);
+  ok(palavras >= 22 && palavras <= 80, `entre 22 e 80 palavras faladas para caber em 15–45 s, com calma (tem ${palavras})`);
   if (p.pronuncia !== undefined) ok(typeof p.pronuncia === 'object', 'pronuncia é um objeto {"palavra": "como se diz"}');
   return e;
 }

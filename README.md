@@ -1,6 +1,6 @@
 # Vídeos da Verdejar
 
-Cada artigo novo do Caderno (verdejarapp.com/journal) ganha um vídeo vertical de 15–20 s,
+Cada artigo novo do Caderno (verdejarapp.com/journal) ganha um vídeo vertical de 15–45 s,
 no estilo mostarda e pincel da marca, com a voz feminina de sempre e legendas palavra a
 palavra, publicado como Reel no Facebook e no Instagram.
 

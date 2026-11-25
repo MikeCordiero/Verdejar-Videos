@@ -32,7 +32,7 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual.
   Stop watering»). Nunca começa com rodeios («Watering a plant isn't easy…»).
 - **Dois tons, um a seguir ao outro.** Depois do hook, a segunda fala acalma e acolhe
   («Relax! It's probably just the watering»). O choque prende; a calma é a marca.
-- **15 a 20 segundos**: 5 a 9 falas, 26 a 46 palavras faladas (sem contar a última). Frases curtas.
+- **15 a 45 segundos, com calma**: 5 a 12 falas, 22 a 80 palavras faladas (sem contar a última). A voz já fala devagar e com pausas; frases curtas, uma ideia por fala. Mais curto é melhor quando o artigo é simples: não se enche para chegar aos 45.
 - **Inglês simples**, tom calmo e acolhedor. Sem superlativos («the best»), sem urgência
   («Download now»).
 - **Nunca dizer «Verdejar»** nem mostrar endereços. O fecho é sempre: uma fala com a cena
