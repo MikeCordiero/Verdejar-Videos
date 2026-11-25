@@ -1,0 +1,18 @@
+{
+  "artigo": {"endereco": "brown-spots-on-houseplant-leaves", "titulo": "Brown spots on houseplant leaves: why?", "planta": "Monstera"},
+  "modelo": "sintoma",
+  "natal": false,
+  "planta": {"forma": "folhagem", "vaso": "terracota"},
+  "legenda": "A brown spot is a scar: whatever caused it may already be over. Where the brown sits tells you whether it was sun, water, dry air or cold.",
+  "beats": [
+    {"texto": "Brown spots on your leaves?!", "cena": "triste", "enfase": ["Brown"], "choque": true},
+    {"texto": "Relax! Where the brown sits tells the story.", "cena": "calma", "enfase": ["story."]},
+    {"texto": "Big dry patches on the window side?! Too much sun.", "cena": "sol-forte", "enfase": ["sun."]},
+    {"texto": "Soft brown in the middle, soil always damp?! Too much water.", "cena": "afogar", "enfase": ["water."]},
+    {"texto": "Crisp tips and edges?! Dry air, or thirst.", "cena": "ar-seco", "enfase": ["Dry air,"]},
+    {"texto": "Next to a cold window or door?! It got a chill.", "cena": "frio", "enfase": ["chill."], "choque": true},
+    {"texto": "So check the soil first, and water only when it's dry.", "cena": "dedo", "seco": true, "enfase": ["first,"]},
+    {"texto": "Every plant is different. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
