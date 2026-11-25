@@ -1,0 +1,18 @@
+{
+  "artigo": {"endereco": "jade-plant-wrinkled-dropping-leaves", "titulo": "Why is my jade plant wrinkled or dropping leaves?", "planta": "Jade plant"},
+  "modelo": "sintoma",
+  "natal": false,
+  "planta": {"forma": "folhagem", "vaso": "terracota"},
+  "legenda": "Wrinkled or falling jade leaves can mean thirst, too much water or cold. Squeeze a leaf and check the soil before you water.",
+  "beats": [
+    {"texto": "Wrinkled leaves on your jade plant?", "cena": "triste", "enfase": ["Wrinkled"], "choque": true},
+    {"texto": "Don't panic! It's telling you something.", "cena": "calma", "enfase": ["telling"]},
+    {"texto": "Thin, wrinkled leaves and dry soil? It's thirsty.", "cena": "secura", "enfase": ["thirsty."]},
+    {"texto": "Soft, dark leaves and a soft stem? Too much water.", "cena": "afogar", "enfase": ["Soft,", "water."], "choque": true},
+    {"texto": "Leaves falling after a cold night? It got too cold.", "cena": "frio", "enfase": ["cold"]},
+    {"texto": "Squeeze a leaf and check the soil first.", "cena": "dedo", "seco": true, "enfase": ["soil"]},
+    {"texto": "Dry right through? Water deeply, then empty the saucer.", "cena": "regar", "enfase": ["deeply,"]},
+    {"texto": "Light and season change everything. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the app!", "cena": "link"}
+  ]
+}
