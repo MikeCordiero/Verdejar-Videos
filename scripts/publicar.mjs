@@ -5,7 +5,9 @@
 import { readFileSync, statSync } from 'node:fs';
 
 const [planoPath, videoPath] = process.argv.slice(2);
-const { FB_PAGE_ID, FB_PAGE_TOKEN } = process.env;
+// Sem espaços nem mudanças de linha das pontas (é fácil colá-los no Secret sem se ver).
+const FB_PAGE_ID = (process.env.FB_PAGE_ID || '').trim();
+const FB_PAGE_TOKEN = (process.env.FB_PAGE_TOKEN || '').trim();
 const V = process.env.GRAPH_VERSION || 'v21.0';
 const GRAPH = `https://graph.facebook.com/${V}`;
 if (!FB_PAGE_ID || !FB_PAGE_TOKEN) throw new Error('Faltam os Secrets FB_PAGE_ID e FB_PAGE_TOKEN (Settings → Secrets and variables → Actions).');
@@ -33,7 +35,11 @@ const legenda = `${plano.legenda.trim()}\n\nComment APP and I'll send you the li
 
 async function confirmarPagina() {
   const eu = await graph(`/me?fields=id,name&access_token=${encodeURIComponent(FB_PAGE_TOKEN)}`);
-  if (eu.id !== FB_PAGE_ID) throw new Error('O FB_PAGE_TOKEN não é o token da página FB_PAGE_ID. Não publico.');
+  if (eu.id !== FB_PAGE_ID) {
+    // O nome e o id de quem é o token não são segredo (o id de uma página é público), e dizem o que corrigir.
+    throw new Error(`O FB_PAGE_TOKEN é de «${eu.name}» (id ${eu.id}), e o FB_PAGE_ID tem ${FB_PAGE_ID.length} carateres e acaba em …${FB_PAGE_ID.slice(-4)}. ` +
+      'Têm de ser a mesma página: o token sai de GET /me/accounts (o access_token da linha da página) e o FB_PAGE_ID é o id dessa linha. Não publico.');
+  }
   console.log(`Página confirmada: ${eu.name}`);
 }
 
