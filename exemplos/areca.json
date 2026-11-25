@@ -12,7 +12,7 @@
  },
  "beats": [
   {
-   "texto": "Brown tips on your palm?",
+   "texto": "Brown tips on your palm?!",
    "cena": "ar-seco",
    "enfase": [
     "Brown"
@@ -55,7 +55,7 @@
    ]
   },
   {
-   "texto": "Comment APP and I'll send you the app!",
+   "texto": "Comment APP and I'll send you the link!",
    "cena": "link"
   }
  ],

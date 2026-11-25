@@ -45,9 +45,10 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual, e nunca escrev
   («Download now»).
 - **Nunca dizer «Verdejar»** nem mostrar endereços. O fecho é sempre: uma fala com a cena
   `app` a dizer que há uma app que ajuda (ex.: «Every plant is different. There's an app
-  that tells you when»), e a última fala exatamente `"Comment APP and I'll send you the app!"` (com APP em maiúsculas) com a cena `link`.
+  that tells you when»), e a última fala exatamente `"Comment APP and I'll send you the link!"` (com APP em maiúsculas) com a cena `link`.
 - **Sem números de rega** («every 7 days»): cada casa é diferente. O gesto certo é «check
   the soil first». Só factos que estejam no artigo; nada inventado.
+- **Perguntas escrevem-se com `?!`** no guião («Why is your plant dying?!», «Dry?!»): dá à voz a entoação de pergunta (sobe no fim) e mais energia; na legenda aparece só `?`. Afirmações e respostas acabam em `.` (a voz desce no fim, soa a resposta) e exclamações em `!`. Evita a mesma fala com pergunta e resposta sem as separar em frases.
 - **Pontuação**: escreve as falas com pontuação normal (ajuda a voz). As legendas tiram os
   pontos finais sozinhas; `?` e `!` ficam.
 - Palavras em `enfase` (no máximo 2 por fala) aparecem em manuscrito laranja; com
@@ -86,7 +87,7 @@ Não toques em `scripts/`, `motor/`, `.github/` nem neste manual, e nunca escrev
 | `feliz` | a planta saudável, com brilhos |
 | `item` | (listas) uma planta da lista, com o nome numa placa; a câmara passa à seguinte |
 | `app` | a planta saudável com outras duas a crescer ao lado (penúltima fala) |
-| `link` | aparece «Comment APP and I'll send you the app!» (última fala) |
+| `link` | aparece «Comment APP and I'll send you the link!» (última fala) |
 
 ## As plantas
 
@@ -108,17 +109,17 @@ espada-de-são-jorge, ZZ → `espada`; areca, kentia → `palmeira`; abeto, alec
   "planta": {"forma": "palmeira", "vaso": "terracota"},
   "legenda": "Brown tips on an areca palm are a message, not a death sentence. Dry air and thirsty soil are the usual suspects.",
   "beats": [
-    {"texto": "Brown tips on your palm?", "cena": "ar-seco", "enfase": ["Brown"], "choque": true},
+    {"texto": "Brown tips on your palm?!", "cena": "ar-seco", "enfase": ["Brown"], "choque": true},
     {"texto": "Don't panic! It's telling you something.", "cena": "calma", "enfase": ["telling"]},
     {"texto": "Dry air from the heater pulls water from the leaves.", "cena": "ar-seco", "enfase": ["heater"]},
     {"texto": "Or the soil dried out completely.", "cena": "secura", "enfase": ["completely."]},
     {"texto": "Check the soil, water deeply, and move it away from heat.", "cena": "regar", "enfase": ["heat."]},
     {"texto": "Never sure when? There's an app that tells you.", "cena": "app", "enfase": ["app"]},
-    {"texto": "Comment APP and I'll send you the app!", "cena": "link"}
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
   ]
 }
 ```
 
 `legenda` é o texto do post (1 ou 2 frases, sem ligação, sem hashtags: o sistema
-acrescenta «Comment APP and I'll send you the app», a nota do artigo na bio e as hashtags). `artigo.planta` é o nome
+acrescenta «Comment APP and I'll send you the link», a nota do artigo na bio e as hashtags). `artigo.planta` é o nome
 inglês da planta principal (vira a primeira hashtag).

@@ -345,7 +345,7 @@ const CENAS={
     const pl=itensL[i].pl;Object.assign(pl.s,{h:.55});T(pl.s,t0+.1,{h:1},.8,'back.out(1.6)');},
   app(b,t0,d,first){irPara(A,t0,[540,870,1.1],first);if(!first){limparCasa(t0);tl.set(plantA.s,{h:1,ill:0},t0);tl.set(st,{fallen:0,soilWet:1,puddle:0},t0);tl.set(sunA,{heat:1,k:1,y:0},t0);}
     T(st,t0,{extras:1},1.1,'power3.out');T(st,t0+.35,{extras2:1},1.1,'power3.out');tl.set(st,{confT:t0},t0);T(st,t0,{confetti:1},.6,'none');cam(A,t0,540,840,1.09,d+2,'sine.inOut');},
-  link(b,t0,d){const pill=$('#pill');pill.textContent='';(b.texto||'').split(/(\bAPP\b)/).forEach(parte=>{if(parte==='APP'){const s=document.createElement('span');s.className='s';s.textContent='APP';pill.appendChild(s);}else pill.appendChild(document.createTextNode(parte));});
+  link(b,t0,d){const pill=$('#pill');pill.textContent='';(b.texto||'').replace(/[?!]*\?[?!]*/g,'?').split(/(\bAPP\b)/).forEach(parte=>{if(parte==='APP'){const s=document.createElement('span');s.className='s';s.textContent='APP';pill.appendChild(s);}else pill.appendChild(document.createTextNode(parte));});
     tl.fromTo('#pill',{opacity:0,y:40,scale:.9},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.5)',immediateRender:false},t0);}
 };
 PLANO.beats.forEach((b,i)=>{const f=CENAS[b.cena]||CENAS.calma;f(b,b.t0,b.t1-b.t0,i===0);if(b.cena!=='link')legenda(b,i);});

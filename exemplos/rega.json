@@ -12,7 +12,7 @@
  },
  "beats": [
   {
-   "texto": "Why is your plant dying?",
+   "texto": "Why is your plant dying?!",
    "cena": "triste",
    "enfase": [
     "dying?"
@@ -40,7 +40,7 @@
    "choque": true
   },
   {
-   "texto": "Stick a finger in the soil. Dry?",
+   "texto": "Stick a finger in the soil. Dry?!",
    "cena": "dedo",
    "enfase": [
     "Dry?"
@@ -61,7 +61,7 @@
    ]
   },
   {
-   "texto": "Comment APP and I'll send you the app!",
+   "texto": "Comment APP and I'll send you the link!",
    "cena": "link"
   }
  ],

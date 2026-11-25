@@ -11,7 +11,7 @@ tarefa agendada do Claude  →  planos/<endereco>.json  →  GitHub Actions  →
 ```
 
 - **O guião** é escrito por uma tarefa agendada do Claude, que segue `docs/agente-de-videos.md`
-  (as regras: hook, dois tons, sem «Verdejar», «Comment APP and I'll send you the app!»…). Para mudar o estilo dos
+  (as regras: hook, dois tons, sem «Verdejar», «Comment APP and I'll send you the link!»…). Para mudar o estilo dos
   guiões, muda-se esse manual.
 - **A voz** é o Kokoro (modelo aberto, Apache 2.0): 70% `af_heart` + 30% `af_bella`, inglês.
   Corre no runner; não há serviço pago nem chave.
@@ -60,3 +60,27 @@ node scripts/montar.mjs saida/rega --fotogramas 1,5,10      # só alguns fotogra
 ```
 
 Abrir `saida/rega/video.html` no browser também mostra o vídeo (com som e em loop).
+
+## O bot do «Comment APP»
+
+O fluxo `responder` (de 15 em 15 minutos) procura nos Reels dos últimos 30 dias comentários
+com «APP», manda a quem comentou uma mensagem privada com a ligação da App Store e responde
+ao comentário («Sent! Check your messages 📩»). Cada comentário só recebe uma vez
+(`estado/respondidos.json`). A Meta só deixa responder em privado até 7 dias depois do
+comentário.
+
+Para o ligar:
+
+1. **Permissões na app da Meta** (developers.facebook.com → a tua app → App Review →
+   Permissions and Features): `instagram_basic`, `instagram_manage_comments`,
+   `instagram_manage_messages`, `pages_messaging`, `pages_read_engagement` e
+   `pages_manage_engagement`. Para funcionar com qualquer pessoa (e não só com quem tem papel
+   na app), estas precisam de **Advanced Access**, que a Meta dá depois de uma revisão.
+2. **Gerar de novo o token da página** com essas permissões e atualizar o Secret `FB_PAGE_TOKEN`
+   (aqui e no Rega-WEB, se for o mesmo).
+3. **No Instagram**: Definições → Privacidade → Mensagens → Ferramentas ligadas → permitir
+   acesso às mensagens.
+4. **Experimentar sem enviar**: Actions → responder → Run workflow, com «enviar» desligado.
+5. **Ligar**: Settings → Secrets and variables → Actions → Variables → `BOT_ATIVO` = `true`.
+
+O texto da mensagem está no topo de `scripts/responder.mjs`.

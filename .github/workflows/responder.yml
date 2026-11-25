@@ -1,0 +1,48 @@
+# O bot do «Comment APP»: de 15 em 15 minutos, manda a ligação da app por mensagem a quem
+# comentou APP num Reel (Instagram e Facebook) e responde ao comentário.
+# Só corre com a variável BOT_ATIVO = true (Settings → Secrets and variables → Actions →
+# Variables), depois de a app da Meta ter as permissões de mensagens (ver README).
+# À mão (Run workflow), com «enviar» desligado, só mostra o que faria.
+name: responder
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      enviar:
+        description: 'Enviar mesmo (desligado = só mostra o que faria)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: responder
+  cancel-in-progress: false
+
+jobs:
+  responder:
+    if: vars.BOT_ATIVO == 'true' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Responder aos comentários
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          REAL: ${{ (github.event_name == 'schedule' || inputs.enviar) && '1' || '0' }}
+        run: node scripts/responder.mjs
+      - name: Guardar quem já recebeu
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain estado)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add estado && git commit -q -m "Bot: comentários respondidos" && git push -q
+          fi

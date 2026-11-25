@@ -8,6 +8,8 @@ acaba; as palavras são distribuídas dentro da fala pelo comprimento (o Kokoro 
 tempos por palavra). Escreve voz.wav e tempos.json.
 """
 import json, os, re, subprocess, sys, tempfile
+import parselmouth
+from parselmouth.praat import call
 import numpy as np
 import soundfile as sf
 from kokoro_onnx import Kokoro
@@ -27,7 +29,7 @@ heart, bella = k.get_voice_style("af_heart"), k.get_voice_style("af_bella")
 voz = heart * 0.7 + bella * 0.3
 # Mais expressão no hook e na fala seguinte (o Miguel): a mesma voz, com mais af_bella (mais viva),
 # o hook um pouco mais rápido e agudo, a resposta calma um pouco mais lenta e quente.
-EXPRESSAO = {0: (heart * 0.4 + bella * 0.6, 1.06, 1.035), 1: (heart * 0.5 + bella * 0.5, 0.96, 1.0)}
+EXPRESSAO = {0: (heart * 0.4 + bella * 0.6, 1.04, 1.0), 1: (heart * 0.5 + bella * 0.5, 0.97, 1.0)}
 velocidade = float(os.environ.get("VELOCIDADE", "1.0"))
 
 def pronunciar(txt):
@@ -45,6 +47,49 @@ def afinar(s, f):
         sf.write(a, s, SR)
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", a, "-af", f"asetrate={int(SR * f)},aresample={SR},atempo={1 / f:.5f}", b], check=True)
         return sf.read(b, dtype="float32")[0]
+
+def entoar(s, fim, expressivo):
+    """Desenha a melodia da frase (o Kokoro, sozinho, quase não sobe nas perguntas).
+
+    Praat (overlap-add, a mesma técnica dos laboratórios de fonética): muda só o tom, não a voz
+    nem a duração. Pergunta: sobe bem no fim. Exclamação: mais variação e um pouco mais aguda.
+    Afirmação: desce no fim. Hook e resposta: mais amplitude de tom (mais expressão).
+    """
+    snd = parselmouth.Sound(s.astype(np.float64), SR)
+    dur = snd.get_total_duration()
+    if dur < 0.25:
+        return s
+    manip = call(snd, "To Manipulation", 0.01, 75, 450)
+    pt = call(manip, "Extract pitch tier")
+    n = call(pt, "Get number of points")
+    if n < 3:
+        return s
+    pts = [(call(pt, "Get time from index", i), call(pt, "Get value at index", i)) for i in range(1, n + 1)]
+    med = float(np.median([f for _, f in pts]))
+    amp = 1.7 if expressivo else (1.35 if fim == "!" else 1.1)
+    novos = []
+    for t, f in pts:
+        u = t / dur
+        g = med * (f / med) ** amp
+        if fim == "?":
+            if u > 0.5:                                         # puxa o fim para cima (~6 meios-tons
+                w = ((u - 0.5) / 0.5) ** 1.1                    # acima da média), mesmo que o modelo desça
+                g = g * (1 - w) + med * 1.5 * w
+        elif fim == "!":
+            g *= 1.05
+            if u > 0.82:
+                g *= 1 - 0.07 * (u - 0.82) / 0.18
+        else:
+            if u > 0.65:                                        # desce: soa a resposta, a ponto final
+                w = (u - 0.65) / 0.35
+                g = g * (1 - w) + med * 0.84 * w
+        novos.append((t, max(70.0, min(520.0, g))))
+    call(pt, "Remove points between", 0, dur)
+    for t, f in novos:
+        call(pt, "Add point", t, f)
+    call([pt, manip], "Replace pitch tier")
+    out = call(manip, "Get resynthesis (overlap-add)")
+    return out.values[0].astype(np.float32)
 
 def narrar(txt, vel, estilo=None, tom=1.0):
     s, _ = k.create(pronunciar(txt), voice=voz if estilo is None else estilo, speed=vel, lang="en-us")
@@ -66,6 +111,8 @@ for i, b in enumerate(plano["beats"]):
     b["t0"], b["palavras"] = round(t, 3), []
     for j, fr in enumerate(frases):
         s = narrar(fr, vel, estilo, tom)
+        fim = "?" if "?" in fr[-3:] else ("!" if fr.endswith("!") else ".")
+        s = entoar(s, fim, expressivo=i in (0, 1))
         dur = len(s) / SR
         ws = fr.split(); ps = pesos(ws); tot, acc = sum(ps), 0.0
         for w, p in zip(ws, ps):

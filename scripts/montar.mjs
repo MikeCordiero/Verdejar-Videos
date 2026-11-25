@@ -17,7 +17,8 @@ const b64 = (p) => readFileSync(p).toString('base64');
 const plano = JSON.parse(readFileSync(join(pasta, 'tempos.json'), 'utf8'));
 // Legendas sem ponto final (regra do Miguel); ? e ! ficam. Cada legenda sai antes da seguinte.
 plano.beats.forEach((b, i) => {
-  b.palavras = b.palavras.map(([w, t]) => [w.replace(/\.+$/, '').replace(/^\.+/, ''), t]).filter(([w]) => w);
+  // "?!" e "!?" no guião dão a entoação de pergunta à voz; na legenda fica só "?".
+  b.palavras = b.palavras.map(([w, t]) => [w.replace(/[?!]*\?[?!]*$/, '?').replace(/\.+$/, '').replace(/^\.+/, ''), t]).filter(([w]) => w);
   const prox = plano.beats[i + 1];
   b.fimLegenda = prox ? Math.max(b.t1 + 0.1, prox.t0 - 0.12) : null;
   if (prox?.cena === 'link') b.fimLegenda = prox.t0 - 0.1;

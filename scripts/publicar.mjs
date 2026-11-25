@@ -29,7 +29,7 @@ const form = (o) => new URLSearchParams({ ...o, access_token: FB_PAGE_TOKEN });
 // Hashtags no padrão dos posts dos artigos: a planta, três gerais e #Verdejar.
 const tag = (s) => '#' + s.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join('');
 const hashtags = [tag(plano.artigo.planta), '#PlantCare', '#PlantTips', plano.natal ? '#ChristmasPlants' : '#PlantLovers', '#Verdejar'].join(' ');
-const legenda = `${plano.legenda.trim()}\n\nComment APP and I'll send you the app.\nThe full article is in our bio.\n\n${hashtags}`;
+const legenda = `${plano.legenda.trim()}\n\nComment APP and I'll send you the link.\nThe full article is in our bio.\n\n${hashtags}`;
 
 async function confirmarPagina() {
   const eu = await graph(`/me?fields=id,name&access_token=${encodeURIComponent(FB_PAGE_TOKEN)}`);

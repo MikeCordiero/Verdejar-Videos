@@ -47,7 +47,7 @@ export function validar(p, ficheiro = '') {
     if (b.cena !== 'link') palavras += (b.texto || '').split(/\s+/).filter(Boolean).length;
   });
   const ult = beats.at(-1), pen = beats.at(-2);
-  ok(ult && ult.cena === 'link' && /^Comment APP and I'll send you the app!?$/.test((ult.texto || '').trim()), 'a última fala é exatamente "Comment APP and I\'ll send you the app!" (APP em maiúsculas) com a cena "link"');
+  ok(ult && ult.cena === 'link' && /^Comment APP and I'll send you the link!?$/.test((ult.texto || '').trim()), 'a última fala é exatamente "Comment APP and I\'ll send you the link!" (APP em maiúsculas) com a cena "link"');
   ok(pen && pen.cena === 'app' && /\bapp\b/i.test(pen.texto || ''), 'a penúltima fala tem a cena "app" e fala de uma app');
   ok(beats[0] && beats[0].cena !== 'app' && beats[0].cena !== 'link', 'a primeira fala é o hook (não pode ser "app" nem "link")');
   ok(beats[0] && (beats[0].texto || '').split(/\s+/).length <= 9, 'o hook tem no máximo 9 palavras (2 segundos)');
