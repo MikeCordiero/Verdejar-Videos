@@ -65,6 +65,25 @@ Abrir `saida/rega/video.html` no browser também mostra o vídeo (com som e em l
 
 ## O bot do «Comment APP»
 
+**Imediato:** um pequeno serviço no Cloudflare (`worker/bot.js`) recebe da Meta o aviso de cada
+comentário no instante em que é feito e, se disser «APP», responde logo por mensagem privada
+(cartão com «Get the app» e «Follow us») e em público («Sent! Check your messages 📩»).
+**Rede de segurança:** o fluxo `responder` passa de 15 em 15 minutos e trata o que tiver
+escapado (com `BOT_ATIVO` = `true`); salta os comentários a que o bot imediato já respondeu.
+
+Para ligar o imediato (uma vez):
+
+1. **Cloudflare**: em dash.cloudflare.com → My Profile → API Tokens → Create Token → modelo
+   «Edit Cloudflare Workers». Guarda o token e o Account ID (na página inicial da conta).
+2. **Secrets** deste repositório: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`,
+   `META_APP_SECRET` (Meta → a app → App settings → Basic → App secret) e
+   `WEBHOOK_VERIFY_TOKEN` (uma frase qualquer, inventada; serve só para a Meta confirmar o endereço).
+3. **Actions → bot → Run workflow**: publica o serviço e liga a página aos avisos. O registo
+   mostra o endereço, `https://verdejar-bot.<subdomínio>.workers.dev`.
+4. **Meta**: no caso de utilização do Instagram, *Configure webhooks* → Callback URL =
+   esse endereço + `/webhook`, Verify token = o `WEBHOOK_VERIFY_TOKEN` → *Verify and save* →
+   subscrever o campo **comments**.
+
 O fluxo `responder` (de 15 em 15 minutos) procura nos Reels dos últimos 30 dias comentários
 com «APP», manda a quem comentou uma mensagem privada com a ligação da App Store e responde
 ao comentário («Sent! Check your messages 📩»). Cada comentário só recebe uma vez

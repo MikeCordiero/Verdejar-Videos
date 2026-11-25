@@ -1,4 +1,5 @@
-// Bot do «Comment APP»: a quem comenta APP num Reel (Instagram ou Facebook), manda por
+// Rede de segurança do bot do «Comment APP» (o imediato é o worker/, avisado pela Meta).
+// A quem comenta APP num Reel (Instagram ou Facebook), manda por
 // mensagem privada a ligação da app, e responde ao comentário para se ver que foi tratado.
 // Uso: node scripts/responder.mjs        (REAL=1 para enviar; sem isso só mostra o que faria)
 // Precisa de FB_PAGE_ID e FB_PAGE_TOKEN, com as permissões de mensagens e comentários (README).
@@ -41,6 +42,10 @@ async function tratar(rede, c, eu) {
   if (feitos.has(c.id) || !PALAVRA.test(c.text || c.message || '')) return;
   if (eu && (c.username === eu || c.from?.id === FB_PAGE_ID)) return;           // os nossos próprios comentários
   if (!recente(c.timestamp || c.created_time, JANELA_H)) { feitos.add(c.id); return; }  // fora da janela da Meta
+  // O bot imediato (worker/) já pode ter respondido: se houver resposta nossa ao comentário, está feito.
+  if (rede === 'instagram' && ig?.username) {
+    try { const rs = await get(`/${c.id}/replies?fields=username`); if ((rs.data || []).some((x) => x.username === ig.username)) { feitos.add(c.id); return; } } catch {}
+  }
   console.log(`${rede}: comentário ${c.id} («${(c.text || c.message || '').slice(0, 40)}»)`);
   if (!REAL) return;
   try {

@@ -1,0 +1,48 @@
+# Publica o bot imediato do «Comment APP» no Cloudflare (worker/) e liga a página da Verdejar aos
+# avisos da Meta. Corre quando worker/ muda, ou à mão (Run workflow).
+# Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, META_APP_SECRET, WEBHOOK_VERIFY_TOKEN,
+# FB_PAGE_ID e FB_PAGE_TOKEN.
+name: bot
+
+on:
+  push:
+    branches: [main]
+    paths: ['worker/**', '.github/workflows/bot.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Publicar o worker no Cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: worker
+          secrets: |
+            FB_PAGE_TOKEN
+            META_APP_SECRET
+            WEBHOOK_VERIFY_TOKEN
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          META_APP_SECRET: ${{ secrets.META_APP_SECRET }}
+          WEBHOOK_VERIFY_TOKEN: ${{ secrets.WEBHOOK_VERIFY_TOKEN }}
+      - name: Ligar a página aos avisos da Meta
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: |
+          # O Instagram só manda os avisos de comentários se a app estiver ligada à página.
+          curl -fsS -X POST "https://graph.facebook.com/v21.0/${FB_PAGE_ID}/subscribed_apps" \
+            --data-urlencode "subscribed_fields=feed" --data-urlencode "access_token=${FB_PAGE_TOKEN}" | grep -q '"success":true' \
+            && echo "Página ligada aos avisos." || { echo "A Meta não ligou a página aos avisos."; exit 1; }
+          echo "### Endereço do webhook" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://verdejar-bot.<o-teu-subdominio>.workers.dev/webhook (o subdomínio aparece no registo do passo anterior)" >> "$GITHUB_STEP_SUMMARY"
