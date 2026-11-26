@@ -1,0 +1,22 @@
+{
+  "artigo": {"endereco": "why-is-my-cyclamen-drooping", "titulo": "Why is my cyclamen drooping or turning yellow?", "planta": "Cyclamen"},
+  "modelo": "sintoma",
+  "padrao": "lista",
+  "titulo": "4 reasons cyclamen go yellow",
+  "natal": true,
+  "planta": {"forma": "flor", "vaso": "terracota", "corFlor": "rosa"},
+  "pronuncia": {"cyclamen": "SIK-luh-men", "Cyclamen": "SIK-luh-men"},
+  "legenda": "A drooping, yellowing cyclamen is rarely the end. Check the compost, the tuber and how warm the room is before you change anything.",
+  "beats": [
+    {"texto": "4 reasons your cyclamen is turning yellow!", "cena": "triste", "enfase": ["yellow!"], "choque": true},
+    {"texto": "Don't panic! Each one leaves different clues.", "cena": "calma", "enfase": ["clues."]},
+    {"texto": "One. Soggy compost starves the roots of air.", "cena": "afogar", "enfase": ["Soggy"]},
+    {"texto": "Two. Bone-dry compost, and the whole plant flops.", "cena": "secura", "enfase": ["flops."]},
+    {"texto": "Three. A dark corner, and the stalks stretch.", "cena": "pouca-luz", "enfase": ["dark"]},
+    {"texto": "And the one most people miss?!", "cena": "triste", "enfase": ["miss?!"]},
+    {"texto": "It's too warm. Move it away from the radiator.", "cena": "ar-seco", "enfase": ["warm."], "choque": true},
+    {"texto": "Then check the soil first, and water round the edge.", "cena": "dedo", "seco": true, "enfase": ["soil"]},
+    {"texto": "Every cyclamen is different. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
