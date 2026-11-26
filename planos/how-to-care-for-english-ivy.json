@@ -1,0 +1,18 @@
+{
+  "artigo": {"endereco": "how-to-care-for-english-ivy", "titulo": "How to care for English ivy indoors", "planta": "English ivy"},
+  "modelo": "erros",
+  "natal": false,
+  "planta": {"forma": "folhagem", "vaso": "creme"},
+  "legenda": "English ivy forgives a lot, but it hates soggy soil, dark corners and hot, dry air. Bright light, a drainage hole and a finger in the soil keep it happy.",
+  "beats": [
+    {"texto": "Is your ivy sitting in soggy soil?!", "cena": "triste", "enfase": ["soggy"], "choque": true},
+    {"texto": "Relax! Ivy forgives a lot.", "cena": "calma", "enfase": ["forgives"]},
+    {"texto": "But standing water rots the roots.", "cena": "afogar", "enfase": ["rots"], "choque": true},
+    {"texto": "In a dark corner?! It grows thin.", "cena": "pouca-luz", "enfase": ["thin."]},
+    {"texto": "Next to a radiator?! Dry air brings spider mites.", "cena": "ar-seco", "enfase": ["spider", "mites."]},
+    {"texto": "So check the soil first.", "cena": "dedo", "seco": true, "enfase": ["soil"]},
+    {"texto": "Dry on top?! Water, and let it drain.", "cena": "regar", "enfase": ["drain."]},
+    {"texto": "Every ivy is different. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
