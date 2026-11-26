@@ -8,6 +8,7 @@ export const CENAS = ['triste', 'calma', 'copo', 'afogar', 'secura', 'calendario
 export const FORMAS = ['folhagem', 'flor', 'cato', 'espada', 'palmeira', 'arvore'];
 export const VASOS = ['azul', 'rosa', 'lilas', 'terracota', 'creme', 'verde'];
 export const CORES = ['vermelho', 'rosa', 'branco', 'roxo', 'amarelo', 'laranja'];
+export const PADROES = ['pergunta', 'erro', 'lista', 'ranking', 'antes-depois', 'mito', 'segredo', 'planta-fala'];
 
 export function validar(p, ficheiro = '') {
   const e = [];
@@ -51,6 +52,13 @@ export function validar(p, ficheiro = '') {
   ok(pen && pen.cena === 'app' && /\bapp\b/i.test(pen.texto || ''), 'a penúltima fala tem a cena "app" e fala de uma app');
   ok(beats[0] && beats[0].cena !== 'app' && beats[0].cena !== 'link', 'a primeira fala é o hook (não pode ser "app" nem "link")');
   ok(beats[0] && (beats[0].texto || '').split(/\s+/).length <= 9, 'o hook tem no máximo 9 palavras (2 segundos)');
+  const hook = (beats[0]?.texto || '').trim();
+  ok(!/^(hey|hi|hello|today|so,?|did you know|in this video|let's|let me|welcome|here's how|watering a plant)\b/i.test(hook), 'o hook começa logo pelo problema: sem rodeios ("Today…", "Did you know…", "Hey…")');
+  ok(/[?!]$/.test(hook), 'o hook acaba em "?!", "?" ou "!"');
+  ok(PADROES.includes(p.padrao), `padrao (o padrão do hook) tem de ser um de: ${PADROES.join(', ')}`);
+  const t = typeof p.titulo === 'string' ? p.titulo.trim() : '';
+  ok(t.length >= 3 && t.length <= 34 && t.split(/\s+/).length <= 6, 'titulo (o título fixo no topo: o hook em versão curta, até 6 palavras e 34 caracteres) em falta');
+  ok(!/verdejar|https?:|www\./i.test(t) && !/\b\d+\s*(days?|weeks?|times a)\b/i.test(t), 'o titulo não diz "Verdejar", não tem endereços nem números de rega');
   if (p.modelo === 'lista') {
     const nomes = new Set(beats.filter((b) => b.cena === 'item').map((b) => (b.item?.nome || '').toLowerCase()));
     ok(nomes.size >= 2 && nomes.size <= 4, 'uma lista mostra entre 2 e 4 plantas diferentes (cenas "item")');

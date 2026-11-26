@@ -4,7 +4,7 @@
   "titulo": "Exemplo: rega",
   "planta": "Monstera"
  },
- "modelo": "erros",
+ "modelo": "erros", "padrao": "pergunta", "titulo": "Why is it dying?",
  "natal": false,
  "planta": {
   "forma": "folhagem",

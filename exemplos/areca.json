@@ -4,7 +4,7 @@
   "titulo": "Exemplo: areca",
   "planta": "Areca palm"
  },
- "modelo": "sintoma",
+ "modelo": "sintoma", "padrao": "pergunta", "titulo": "Brown palm tips?",
  "natal": false,
  "planta": {
   "forma": "palmeira",

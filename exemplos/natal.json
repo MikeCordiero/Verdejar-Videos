@@ -4,7 +4,7 @@
   "titulo": "Exemplo: plantas vermelhas",
   "planta": "Cyclamen"
  },
- "modelo": "lista",
+ "modelo": "lista", "padrao": "lista", "titulo": "3 red Christmas plants",
  "natal": true,
  "planta": {
   "forma": "flor",

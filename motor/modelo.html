@@ -22,6 +22,9 @@ html,body{margin:0;height:100%;background:#2B2620;overflow:hidden}
 .hook .s{font-size:1.75em}
 #pill{position:absolute;left:0;right:0;margin:0 auto;width:max-content;max-width:900px;top:220px;background:#FDF8F2;color:#2B2620;font-family:'Manrope';font-weight:800;font-size:70px;line-height:1.12;letter-spacing:-1.5px;padding:34px 70px;border-radius:64px;text-align:center;opacity:0}
 #pill .s{font-family:'Caveat Brush';font-weight:400;color:#8A3A1F;font-size:1.35em;letter-spacing:0}
+#titulo{position:absolute;left:60px;right:60px;top:118px;text-align:center;font-family:'Caveat Brush';font-weight:400;color:#8A3A1F;font-size:76px;line-height:1;letter-spacing:0;opacity:0}
+#titulo::after{content:'';display:block;margin:14px auto 0;width:140px;height:6px;border-radius:3px;background:#8A3A1F;opacity:.35}
+.comtitulo .cap{top:270px}.comtitulo .hook{top:250px}.comtitulo #pill{top:280px}
 #luzes{position:absolute;left:0;top:0;width:1080px;height:140px;pointer-events:none;display:none}
 </style>
 </head>
@@ -30,7 +33,7 @@ html,body{margin:0;height:100%;background:#2B2620;overflow:hidden}
   <div id="world"><svg id="scene" width="1080" height="1920" viewBox="0 0 1080 1920"></svg></div>
   <div id="band"></div>
   <svg id="luzes" viewBox="0 0 1080 140"></svg>
-  <div id="txt"><div id="pill"></div></div>
+  <div id="txt"><div id="titulo"></div><div id="pill"></div></div>
   <div id="grain"></div>
 </div>
 <audio id="vo" src="%%AUDIO%%" preload="auto"></audio>
@@ -349,6 +352,10 @@ const CENAS={
     tl.fromTo('#pill',{opacity:0,y:40,scale:.9},{opacity:1,y:0,scale:1,duration:.45,ease:'back.out(1.5)',immediateRender:false},t0);}
 };
 PLANO.beats.forEach((b,i)=>{const f=CENAS[b.cena]||CENAS.calma;f(b,b.t0,b.t1-b.t0,i===0);if(b.cena!=='link')legenda(b,i);});
+/* título fixo no topo: o hook em versão curta, do primeiro frame até à fala da app */
+if(PLANO.titulo){const T=$('#titulo');T.textContent=String(PLANO.titulo).replace(/\.$/,'');TXT.classList.add('comtitulo');
+  tl.set(T,{opacity:1,y:0,scale:1},0);tl.fromTo(T,{scale:1.08},{scale:1,duration:.5,ease:'back.out(2)',immediateRender:false},0);
+  const fim=(PLANO.beats.find(b=>b.cena==='app')||PLANO.beats.at(-1)).t0;tl.to(T,{opacity:0,y:-24,duration:.3,ease:'power2.in'},Math.max(.5,fim-.15));}
 tl.to({},{duration:.01},DUR-.01);
 
 /* ---------- controlo: autoplay + loop; ?clean=1 para exportar ---------- */
