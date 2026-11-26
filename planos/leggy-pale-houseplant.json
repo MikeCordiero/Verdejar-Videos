@@ -1,0 +1,85 @@
+{
+  "artigo": {
+    "endereco": "leggy-pale-houseplant",
+    "titulo": "Leggy, pale houseplant: is it lack of light?",
+    "planta": "Pothos"
+  },
+  "modelo": "sintoma",
+  "padrao": "mito",
+  "titulo": "Leggy plant? Skip the fertiliser",
+  "natal": false,
+  "planta": {
+    "forma": "folhagem",
+    "vaso": "creme"
+  },
+  "pronuncia": {
+    "pothos": "POH-thos",
+    "Pothos": "POH-thos"
+  },
+  "legenda": "Long bare stems and pale leaves are a plant reaching for light. Feeding won't fix it; more light, a turn of the pot and a trim will.",
+  "beats": [
+    {
+      "texto": "Leggy, pale pothos?! Feeding it won't fix it!",
+      "cena": "pouca-luz",
+      "enfase": [
+        "Feeding"
+      ],
+      "choque": true
+    },
+    {
+      "texto": "Relax! It's just reaching for light.",
+      "cena": "calma",
+      "enfase": [
+        "light."
+      ]
+    },
+    {
+      "texto": "Long bare stems and pale leaves mean it's short of light.",
+      "cena": "pouca-luz",
+      "enfase": [
+        "pale"
+      ]
+    },
+    {
+      "texto": "And fertiliser in low light? It makes it even leggier.",
+      "cena": "triste",
+      "enfase": [
+        "leggier."
+      ],
+      "choque": true
+    },
+    {
+      "texto": "Move it closer to the window, a little at a time.",
+      "cena": "feliz",
+      "enfase": [
+        "closer"
+      ]
+    },
+    {
+      "texto": "More light dries the soil faster. Check it first.",
+      "cena": "dedo",
+      "seco": true,
+      "enfase": [
+        "soil"
+      ]
+    },
+    {
+      "texto": "Stretched stems won't shrink. Trim them above a leaf.",
+      "cena": "feliz",
+      "enfase": [
+        "Trim"
+      ]
+    },
+    {
+      "texto": "Every spot is different. There's an app that tells you when.",
+      "cena": "app",
+      "enfase": [
+        "app"
+      ]
+    },
+    {
+      "texto": "Comment APP and I'll send you the link!",
+      "cena": "link"
+    }
+  ]
+}

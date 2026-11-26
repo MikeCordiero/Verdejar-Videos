@@ -9,3 +9,4 @@
 | 2026-11-26 | how-to-care-for-english-ivy | erros | pergunta | Is your ivy sitting in soggy soil?! |
 | 2026-11-26 | why-is-my-cyclamen-drooping | sintoma | lista | 4 reasons your cyclamen is turning yellow! |
 | 2026-11-26 | why-is-my-cyclamen-drooping | sintoma | lista | 3 reasons your cyclamen is drooping, and the fix! |
+| 2026-11-26 | leggy-pale-houseplant | sintoma | mito | Leggy, pale pothos?! Feeding it won't fix it! |
