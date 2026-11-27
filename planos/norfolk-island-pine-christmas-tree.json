@@ -1,0 +1,31 @@
+{
+  "artigo": {
+    "endereco": "norfolk-island-pine-christmas-tree",
+    "titulo": "Norfolk Island pine as a Christmas tree: care guide",
+    "planta": "Norfolk Island pine"
+  },
+  "modelo": "erros",
+  "padrao": "erro",
+  "titulo": "3 Norfolk pine mistakes",
+  "natal": true,
+  "planta": {
+    "forma": "arvore",
+    "vaso": "terracota"
+  },
+  "pronuncia": {
+    "Norfolk": "NOR-fuk"
+  },
+  "legenda": "A Norfolk Island pine can be your Christmas tree all year round. Give it the brightest window, keep it away from radiators and never leave the compost soggy.",
+  "beats": [
+    {"texto": "You're making 3 mistakes with your Norfolk pine!", "cena": "triste", "enfase": ["mistakes"], "choque": true},
+    {"texto": "Relax! They're all easy to fix.", "cena": "calma", "enfase": ["easy"]},
+    {"texto": "Mistake one: a dark corner. It wants the brightest window.", "cena": "pouca-luz", "enfase": ["brightest"]},
+    {"texto": "Mistake two: the radiator. Dry air turns the needles brown.", "cena": "ar-seco", "enfase": ["radiator."]},
+    {"texto": "And the worst one? Soggy compost.", "cena": "afogar", "enfase": ["worst"], "choque": true},
+    {"texto": "A lower branch that dies won't grow back.", "cena": "triste", "enfase": ["won't"]},
+    {"texto": "So check the soil first. Water when the top is dry.", "cena": "dedo", "seco": true, "enfase": ["soil"]},
+    {"texto": "Water until it drains, then empty the saucer.", "cena": "regar", "enfase": ["drains,"]},
+    {"texto": "Every plant is different. There's an app that helps you care for yours.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
