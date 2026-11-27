@@ -1,0 +1,20 @@
+{
+  "artigo": {"endereco": "brown-tips-on-houseplant-leaves", "titulo": "Why are my houseplant's leaf tips turning brown?", "planta": "Peace lily"},
+  "modelo": "sintoma",
+  "padrao": "planta-fala",
+  "titulo": "Brown tips, not dying",
+  "natal": false,
+  "planta": {"forma": "flor", "vaso": "creme", "corFlor": "branco"},
+  "legenda": "Brown leaf tips won't turn green again, but they tell you what to change. Dry air, thirsty soil, fertiliser salts or soggy roots: new leaves can come through whole.",
+  "beats": [
+    {"texto": "Brown tips?! I'm not dying, I'm telling you something!", "cena": "ar-seco", "enfase": ["Brown"], "choque": true},
+    {"texto": "Relax! It's usually one of three things.", "cena": "calma", "enfase": ["three"]},
+    {"texto": "Dry air from the heating crisps the tips.", "cena": "ar-seco", "enfase": ["heating"]},
+    {"texto": "Or the soil stayed bone dry for days.", "cena": "secura", "enfase": ["bone dry"]},
+    {"texto": "White crust on the soil?! Fertiliser salts. Flush them out.", "cena": "regar", "enfase": ["crust"]},
+    {"texto": "But here's the thing. Soggy soil causes brown tips too!", "cena": "afogar", "enfase": ["Soggy"], "choque": true},
+    {"texto": "So check the soil first, and water deeply once it's dry.", "cena": "dedo", "seco": true, "enfase": ["first,"]},
+    {"texto": "Every plant is different. There's an app that tells you when.", "cena": "app", "enfase": ["app"]},
+    {"texto": "Comment APP and I'll send you the link!", "cena": "link"}
+  ]
+}
