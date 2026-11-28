@@ -12,3 +12,4 @@
 | 2026-11-26 | leggy-pale-houseplant | sintoma | mito | Leggy, pale pothos?! Feeding it won't fix it! |
 | 2026-11-27 | norfolk-island-pine-christmas-tree | erros | erro | You're making 3 mistakes with your Norfolk pine! |
 | 2026-11-27 | brown-tips-on-houseplant-leaves | sintoma | planta-fala | Brown tips?! I'm not dying, I'm telling you something! |
+| 2026-11-28 | how-to-force-hyacinth-bulbs-for-christmas | erros | segredo | Hyacinths at Christmas?! The secret is a fake winter! |

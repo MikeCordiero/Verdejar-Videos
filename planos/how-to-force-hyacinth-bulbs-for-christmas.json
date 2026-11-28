@@ -1,0 +1,96 @@
+{
+  "artigo": {
+    "endereco": "how-to-force-hyacinth-bulbs-for-christmas",
+    "titulo": "How to force hyacinth bulbs for Christmas",
+    "planta": "Hyacinth"
+  },
+  "modelo": "erros",
+  "padrao": "segredo",
+  "titulo": "Hyacinth secret: a fake winter",
+  "natal": true,
+  "planta": {
+    "forma": "flor",
+    "vaso": "azul",
+    "corFlor": "roxo"
+  },
+  "pronuncia": {
+    "Hyacinths": "HY-uh-sinths",
+    "hyacinth": "HY-uh-sinth"
+  },
+  "legenda": "A hyacinth flowering at Christmas is a bulb tricked into thinking winter is over. Missed the start? A pot with tight buds, kept cool, still gets you there this year.",
+  "beats": [
+    {
+      "texto": "Hyacinths at Christmas?! The secret is a fake winter!",
+      "cena": "frio",
+      "enfase": [
+        "fake",
+        "winter!"
+      ],
+      "choque": true
+    },
+    {
+      "texto": "Relax! It's easier than it sounds.",
+      "cena": "calma",
+      "enfase": [
+        "easier"
+      ]
+    },
+    {
+      "texto": "Start in September, with prepared bulbs.",
+      "cena": "calendario",
+      "enfase": [
+        "prepared"
+      ]
+    },
+    {
+      "texto": "Then a few weeks somewhere cold and dark.",
+      "cena": "frio",
+      "enfase": [
+        "cold",
+        "dark."
+      ]
+    },
+    {
+      "texto": "Keep the compost lightly moist. Never soggy.",
+      "cena": "afogar",
+      "enfase": [
+        "soggy."
+      ],
+      "choque": true
+    },
+    {
+      "texto": "Shoots a few centimetres tall? Now it goes into the light.",
+      "cena": "pouca-luz",
+      "enfase": [
+        "light."
+      ]
+    },
+    {
+      "texto": "Already December?! Buy tight buds and keep them cool.",
+      "cena": "feliz",
+      "enfase": [
+        "tight",
+        "cool."
+      ]
+    },
+    {
+      "texto": "Check the soil first. Water when it's dry on top.",
+      "cena": "dedo",
+      "seco": true,
+      "enfase": [
+        "soil"
+      ]
+    },
+    {
+      "texto": "Every plant is different. There's an app that tells you when.",
+      "cena": "app",
+      "enfase": [
+        "app"
+      ]
+    },
+    {
+      "texto": "Comment APP and I'll send you the link!",
+      "cena": "link"
+    }
+  ]
+}
